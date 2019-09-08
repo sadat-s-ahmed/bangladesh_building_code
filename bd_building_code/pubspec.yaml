@@ -30,6 +30,7 @@ dev_dependencies:
   animated_splash: ^1.0.0
   flutter_secure_storage: ^3.2.1+1
   font_awesome_flutter: ^8.0.1
+  cupertino_icons:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -47,6 +48,10 @@ flutter:
    - assets/bd_code.png
    - assets/Login_bg.jpg
    - assets/architect.png
+   - assets/abacus.png
+   - assets/budget.png
+   - assets/geometry.png
+   - assets/manual.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
