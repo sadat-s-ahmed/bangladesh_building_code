@@ -9,23 +9,27 @@ class History extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('History'),
-      ),
-      body: Center(
-        child: _operationsList(operations),
-      ),
+    return  Container(
+      padding: EdgeInsets.symmetric(vertical: 60),
+      child: Center(
+          child:
+          //Text('Hello')
+          _operationsList(operations),
+        ),
     );
   }
 
   Widget _operationsList(List<String> operations) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context , index) => Divider(
+        color: Colors.black,
+      ),
       itemCount: operations.length,
       itemBuilder: (BuildContext context, int i) {
         return ListTile(
           title: Text(operations[i]),
           onTap: () {
+            print(operations[i]);
             Navigator.pop(context, operations[i]);
           },
           leading: Container(
@@ -39,6 +43,7 @@ class History extends StatelessWidget {
             ),
             padding: EdgeInsets.all(5),
           ),
+          
         );
       },
     );

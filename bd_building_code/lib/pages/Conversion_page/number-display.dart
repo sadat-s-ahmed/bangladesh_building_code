@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class NumberDisplay extends StatelessWidget {
-   NumberDisplay({this.value: ''});
-
+   NumberDisplay({this.value: '', this.type});
+  final bool type;
   final String value;    
   @override
   Widget build(BuildContext context) {
