@@ -1,9 +1,10 @@
+import 'package:bd_building_code/pages/homeScreen/home_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:animated_splash/animated_splash.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:bd_building_code/pages/home_page.dart';
 import 'package:bd_building_code/pages/loginScreen/loginScreen.dart';
 
 void main(){
@@ -21,11 +22,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
       title: 'Bangladesh Building Code',
       home: AnimatedSplash(
         imagePath: 'assets/bd_code.png',
-        duration: 5000,
+        duration: 2000,
         type: AnimatedSplashType.BackgroundProcess,
         customFunction: duringSplash,
         outputAndHome: routes,

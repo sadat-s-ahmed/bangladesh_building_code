@@ -1,0 +1,137 @@
+import 'package:bd_building_code/component/homepage_bar.dart';
+import 'package:bd_building_code/models/home_card_details.dart';
+import 'package:bd_building_code/pages/FAR_page/far_page.dart';
+import 'package:bd_building_code/pages/guidebook_page/guidebook_page.dart';
+import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+Color backgroundColor = Colors.grey.shade200;
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  List<HomeCardsDetails> pages = [
+    new HomeCardsDetails("Guide Book", Icons.book, GuidebookPage()),
+    new HomeCardsDetails(
+        "Estimation Unit Converter", Icons.cake, ConversionPage()),
+    new HomeCardsDetails("FAR Calculator", Icons.art_track, Far_page()),
+    new HomeCardsDetails("Additional", Icons.schedule, HomePage()),
+  ];
+  AnimationController cardEntranceController;
+  List<Animation> ticketAnimation;
+  Animation fabAnimation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    cardEntranceController = new AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1100),
+    );
+    ticketAnimation = pages.map((stop) {
+      int index = pages.indexOf(stop);
+      double start = index * 0.1;
+      double duration = 0.6;
+      double end = duration + start;
+      return new Tween<double>(begin: 800.0, end: 0.0).animate(
+          new CurvedAnimation(
+              parent: cardEntranceController,
+              curve: new Interval(start, end, curve: Curves.decelerate)));
+    }).toList();
+    fabAnimation = new CurvedAnimation(
+        parent: cardEntranceController,
+        curve: Interval(0.7, 1.0, curve: Curves.decelerate));
+    cardEntranceController.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cardEntranceController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          HomePageBar(height: 250.0, title: "Building Code"),
+          Positioned.fill(
+            top: MediaQuery.of(context).padding.top + 64.0,
+            child: SingleChildScrollView(
+              child: Column(
+                children: _buildCards().toList(),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Iterable<Widget> _buildCards() {
+    return pages.map((page) {
+      int index = pages.indexOf(page);
+      return AnimatedBuilder(
+        animation: cardEntranceController,
+        child: Card(
+          elevation: 8.0,
+          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+          child: Container(
+            decoration: BoxDecoration(color: backgroundColor),
+            child: makeTiles(page),
+          ),
+        ),
+        builder: (context, child) => new Transform.translate(
+          offset: Offset(0.0, ticketAnimation[index].value),
+          child: child,
+        ),
+      );
+    });
+  }
+
+  Widget makeTiles(HomeCardsDetails page) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => page.to),
+        );
+      },
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        leading: Container(
+          padding: EdgeInsets.only(right: 12.0),
+          decoration: new BoxDecoration(
+              border: new Border(
+                  right: new BorderSide(
+                    width: 1.0, 
+                    color: Colors.black87))),
+          child: Icon(
+              page.iconData,
+             color: Colors.black87,
+             size: 18.0,
+             ),
+        ),
+        title: Text(
+          page.title,
+          style: TextStyle(
+            color: Colors.black87, 
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0
+            ),
+        ),
+        trailing:
+            Icon(Icons.keyboard_arrow_right, color: Colors.black87, size: 30.0),
+      ),
+    );
+  }
+}
