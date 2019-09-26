@@ -37,6 +37,9 @@ dev_dependencies:
   dropdownfield: ^1.0.3
   direct_select_flutter: ^1.0.4
   flutter_plugin_pdf_viewer: any
+  flutter_pdfview: ^1.0.0+9
+  path_provider:
+  http:  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -51,6 +54,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+   - assets/ 
    - assets/bd_code.png
    - assets/Login_bg.jpg
    - assets/architect.png
@@ -59,6 +63,8 @@ flutter:
    - assets/geometry.png
    - assets/manual.png
    - assets/icons/imgforgot.png
+   - assets/sketch.png
+   - assets/home.png
 
    
 

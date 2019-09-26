@@ -66,8 +66,10 @@ class _LoginPageState extends State<LoginPage> {
                   )),
                     SingleChildScrollView(
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: size.getWidthPx(20),
-                        vertical: size.getWidthPx(20)),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: size.getWidthPx(20),
+                      vertical: size.getWidthPx(20)
+                      ),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -129,7 +131,8 @@ class _LoginPageState extends State<LoginPage> {
           FocusScope.of(context).requestFocus(_passFocusNode);
         },
         icon: Icons.email,
-        iconColor: colorCurve);
+        iconColor: colorCurve
+        );
   }
 
   BoxField _passwordWidget() {

@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          HomePageBar(height: 250.0, title: "Building Code"),
+          HomePageBar(height: 300.0, title: "Building Code"),
           Positioned.fill(
             top: MediaQuery.of(context).padding.top + 64.0,
             child: SingleChildScrollView(
@@ -85,6 +85,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         animation: cardEntranceController,
         child: Card(
           elevation: 8.0,
+          borderOnForeground: true,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
           child: Container(
             decoration: BoxDecoration(color: backgroundColor),

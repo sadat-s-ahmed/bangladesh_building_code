@@ -27,6 +27,9 @@ class HomePageBar extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           centerTitle: true,
+          actions: <Widget>[
+
+          ],
           title: new Text(
             title,
             style: TextStyle(
