@@ -5,7 +5,8 @@ import 'package:bd_building_code/component/gradient_text.dart';
 import 'package:bd_building_code/component/responsive_screen.dart';
 import 'package:flutter/material.dart';
 
-Color colorCurve = Color.fromRGBO(0, 66, 129, 0.8);
+
+Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
 
 class PageForgotPassword extends StatefulWidget {
@@ -93,8 +94,8 @@ class _PageForgotPasswordState extends State<PageForgotPassword> {
   GradientText _forgotGradientText() {
     return GradientText('Forgot password',
         gradient: LinearGradient(colors: [
-          Color.fromRGBO(0, 66, 129,1),
-          Color.fromRGBO(0, 119, 166, 1.0)
+           Color.fromRGBO(58, 58, 58,1),
+          Color.fromRGBO(58, 58, 58, .4)
         ]),
         style: TextStyle(
             fontFamily: 'Exo2', fontSize: 30, fontWeight: FontWeight.bold));

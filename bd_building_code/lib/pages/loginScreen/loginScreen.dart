@@ -9,7 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Color colorCurve = Color.fromRGBO(0, 66, 129, 0.8);
+Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
 
 // Color colorCurveSecondary = Color.fromRGBO(97, 10, 155, 0.6);
@@ -42,11 +42,11 @@ class _LoginPageState extends State<LoginPage> {
         resizeToAvoidBottomInset: true,
         body: AnnotatedRegion(
           value: SystemUiOverlayStyle(
-              statusBarColor: backgroundColor,
+              statusBarColor: Colors.black,
               statusBarBrightness: Brightness.light,
               statusBarIconBrightness: Brightness.dark,
               systemNavigationBarIconBrightness: Brightness.light,
-              systemNavigationBarColor:backgroundColor
+              systemNavigationBarColor:Colors.black
               ),
 
           child: Container(
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
           text: "Don't have an account? ",
           children: [
             TextSpan(
-              style: TextStyle(color: Color.fromRGBO(0, 119, 166, 1)),
+              style: TextStyle(color: Color.fromRGBO(58,58, 58, .6)),
               text: 'Create your account.',
               recognizer: TapGestureRecognizer()
                 ..onTap = () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage())),
@@ -111,8 +111,8 @@ class _LoginPageState extends State<LoginPage> {
   GradientText _loginGradientText() {
     return GradientText('Login',
         gradient: LinearGradient(colors: [
-          Color.fromRGBO(0, 66, 129,1),
-          Color.fromRGBO(0, 119, 166, 1.0)
+          Color.fromRGBO(58, 58, 58,1),
+          Color.fromRGBO(58, 58, 58, .4)
         ]),
         style: TextStyle(fontFamily: 'Exo2',fontSize: 36, fontWeight: FontWeight.bold));
   }
@@ -215,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                           alignment: Alignment.centerRight,
                           child: Text("Forgot Password?",
                               style: TextStyle(
-                                color: Color.fromRGBO(0, 119, 166,1.0),
+                                color: Color.fromRGBO(58, 58, 58,.8),
                                 fontFamily: 'Exo2',
                                 fontSize: 16.0)
                                 )

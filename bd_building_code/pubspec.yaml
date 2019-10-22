@@ -40,6 +40,7 @@ dev_dependencies:
   flutter_pdfview: ^1.0.0+9
   path_provider:
   http:  
+  url_launcher:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

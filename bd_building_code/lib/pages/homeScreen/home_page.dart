@@ -8,7 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Color backgroundColor = Colors.grey.shade200;
-
+Color bg_grad = Color.fromRGBO(58, 58,58,1);
+Color bg_grad2 = Color.fromRGBO(58, 58, 58,.7);
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -20,9 +21,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<HomeCardsDetails> pages = [
     new HomeCardsDetails("Guide Book", Icons.book, GuidebookPage()),
     new HomeCardsDetails(
-        "Estimation Unit Converter", Icons.cake, ConversionPage()),
-    new HomeCardsDetails("FAR Calculator", Icons.art_track, Far_page()),
-    new HomeCardsDetails("Additional", Icons.schedule, HomePage()),
+        "Estimation Unit Converter", Icons.apps, ConversionPage()),
+    new HomeCardsDetails("FAR Calculator", Icons.blur_linear, Far_page()),
   ];
   AnimationController cardEntranceController;
   List<Animation> ticketAnimation;
@@ -62,11 +62,79 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+            child: AppBar(
+            backgroundColor:bg_grad ,
+            elevation: 0.0,
+            centerTitle: true,
+            title: new Text(
+                'Bangladesh Building Code',
+                style: TextStyle(
+                     fontWeight: FontWeight.bold,
+                     color: Colors.white
+                     ),
+              ),
+          ),
+      ),
+      drawer: new Drawer(
+        child: new ListView(
+          children: <Widget>[
+            Container(
+              color: bg_grad2,
+              child: new UserAccountsDrawerHeader(
+                accountName: new Text("Arefin Chisty"),
+                accountEmail: new Text("arefinChisty@gmail.com"),
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: new ExactAssetImage('assets/images/lake.jpeg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                currentAccountPicture: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://randomuser.me/api/portraits/men/46.jpg")),
+              ),
+            ),
+            new ListTile(
+                leading: Icon(Icons.dashboard),
+                title: new Text("Guide Books"),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+            new ListTile(
+                leading:Icon(Icons.apps),
+                title: new Text("FAR Calculator"),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+            new ListTile(
+                leading: Icon(Icons.settings),
+                title: new Text("Estimation Unit Calculator"),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+            new Divider(),
+            new ListTile(
+                leading: Icon(Icons.info),
+                title: new Text("About"),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+            new ListTile(
+                leading: Icon(Icons.power_settings_new),
+                title: new Text("Logout"),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        ),
+      ),
       body: Stack(
         children: <Widget>[
-          HomePageBar(height: 300.0, title: "Building Code"),
+          // HomePageBar(height: 260.0, title: "Bangladesh Building Code"),
           Positioned.fill(
-            top: MediaQuery.of(context).padding.top + 64.0,
+            top: MediaQuery.of(context).padding.top,
             child: SingleChildScrollView(
               child: Column(
                 children: _buildCards().toList(),
@@ -86,10 +154,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: Card(
           elevation: 8.0,
           borderOnForeground: true,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
           child: Container(
-            decoration: BoxDecoration(color: backgroundColor),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: new BorderRadius.all(Radius.circular(15.0))
+              ),
             child: makeTiles(page),
           ),
         ),
@@ -120,7 +192,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: Icon(
               page.iconData,
              color: Colors.black87,
-             size: 18.0,
+             size: 35.0,
              ),
         ),
         title: Text(

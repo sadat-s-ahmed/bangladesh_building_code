@@ -5,7 +5,7 @@ import 'package:bd_building_code/component/responsive_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-Color colorCurve = Color.fromRGBO(0, 66, 129, 0.8);
+Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
 
 class SignUpPage extends StatefulWidget {
@@ -78,7 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             TextSpan(
               style: TextStyle(
-                color: Color.fromRGBO(0, 119, 166, 1.0)),
+                color: Color.fromRGBO(58, 58,58, .6)),
               text: 'Login here',
               recognizer: TapGestureRecognizer()
                 ..onTap = () => Navigator.pop(context),
@@ -91,8 +91,8 @@ class _SignUpPageState extends State<SignUpPage> {
   GradientText _signUpGradientText() {
     return GradientText('Register',
         gradient: LinearGradient(colors: [
-          Color.fromRGBO(0, 66, 129,1),
-          Color.fromRGBO(0, 119, 166, 1.0)
+          Color.fromRGBO(58, 58, 58,1),
+          Color.fromRGBO(58, 58, 58, .4)
         ]),
         style: TextStyle(fontFamily: 'Exo2',fontSize: 36, fontWeight: FontWeight.bold));
   }
