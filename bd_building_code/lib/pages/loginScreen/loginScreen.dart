@@ -1,4 +1,4 @@
-import 'package:bd_building_code/component/bottom_curve_painter.dart';
+
 import 'package:bd_building_code/component/boxfeild.dart';
 import 'package:bd_building_code/component/gradient_text.dart';
 import 'package:bd_building_code/component/responsive_screen.dart';
@@ -12,6 +12,10 @@ import 'package:flutter/services.dart';
 Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
 
+Color grads = Color.fromRGBO(189 , 195 , 199, 1);
+Color grads2 = Color.fromRGBO(44  , 62  , 80, 1);
+Color gradinner1 = Color.fromRGBO(142 , 158 , 171, 1);
+Color gradinner2 = Color.fromRGBO(238, 242 , 243, 1);
 // Color colorCurveSecondary = Color.fromRGBO(97, 10, 155, 0.6);
 // Color backgroundColor =Colors.grey.shade200;
 // Color textPrimaryColor =Colors.black87;
@@ -49,43 +53,134 @@ class _LoginPageState extends State<LoginPage> {
               systemNavigationBarColor:Colors.black
               ),
 
-          child: Container(
-            color: Colors.white,
-            child: SafeArea(
-              top: true,
-              bottom: false,
-              child: Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
+          child:Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 1],
+                  colors: [
+                    grads,
+                    grads2
+                  ],
+                ),
+              ),
+              child:new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  
+                  loginThings(),
+                ],
+              ) ,
+              ),
 
+              
+            ],
+          )
+          
+          
+          
+          // Container(
+          //   // Add box decoration
+          // decoration: BoxDecoration(
+          //   gradient: LinearGradient(
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //     stops: [0.4, 0.6],
+          //     colors: [
+          //       grads,
+          //       grads2
+          //     ],
+          //   ),
+          // ),
 
-              ClipPath(
-              clipper: BottomShapeClipper(),
-              child: Container(
-                  color: colorCurve,
-                  )),
-                    SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: size.getWidthPx(20),
-                      vertical: size.getWidthPx(20)
-                      ),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+            // child: Center(
+            //   child: SafeArea(
+            //     top: true,
+            //     bottom: false,
+            //     child: Stack(
+            //         fit: StackFit.expand,
+            //         children: <Widget>[
+            //         SingleChildScrollView(
+            //         child: Container(
+            //           margin: EdgeInsets.symmetric(
+            //             horizontal: size.getWidthPx(20),
+            //             vertical: size.getWidthPx(20)
+            //             ),
+            //           child: Column(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: <Widget>[
 
-                          _loginGradientText(), // text
-                          SizedBox(height: size.getWidthPx(10)),
-                          _textAccount(),
-                          SizedBox(height: size.getWidthPx(30)),
-                          loginFields()
-                        ]),
-                  ),
-                )
-              ]),
-            ),
-          ),
+            //                 _loginGradientText(), // text
+            //                 SizedBox(height: size.getWidthPx(10)),
+            //                 _textAccount(),
+            //                 SizedBox(height: size.getWidthPx(30)),
+            //                 loginFields()
+            //               ]),
+            //         ),
+            //       )
+            //     ]),
+            //   ),
+            // ),
+          // ),
         ));
+  }
+
+  loginThings(){
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+      padding: const EdgeInsets.all(15.0),
+      decoration: new BoxDecoration(
+        gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 1],
+                  colors: [
+                    gradinner1,
+                    gradinner2
+                  ],
+                ),
+        //you can get rid of below line also
+        borderRadius: new BorderRadius.circular(10.0),
+        //below line is for rectangular shape
+        shape: BoxShape.rectangle,
+        //you can change opacity with color here(I used black) for rect
+        // color: Colors.black.withOpacity(0.5),
+        //I added some shadow, but you can remove boxShadow also.
+        boxShadow: <BoxShadow>[
+          new BoxShadow(
+            color: Colors.white30,
+            blurRadius: 5.0,
+            offset: new Offset(2.0, 2.0),
+          ),
+        ],
+      ),
+      child: new Column(
+        children: <Widget>[
+                  SingleChildScrollView(
+                    child: Container(
+                      // margin: EdgeInsets.symmetric(
+                      //   horizontal: size.getWidthPx(20),
+                      //   vertical: size.getWidthPx(20)
+                      //   ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+
+                            _loginGradientText(), // text
+                            SizedBox(height: size.getWidthPx(10)),
+                            _textAccount(),
+                            SizedBox(height: size.getWidthPx(30)),
+                            loginFields()
+                          ]),
+                    ),
+                  )
+        ],
+      ),
+    );
   }
 
   RichText _textAccount() {
