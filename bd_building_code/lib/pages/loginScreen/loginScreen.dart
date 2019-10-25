@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
     return GradientText('Login',
         gradient: LinearGradient(colors: [
           Color.fromRGBO(58, 58, 58,1),
-          Color.fromRGBO(58, 58, 58, .4)
+          Color.fromRGBO(58, 58, 58, .7)
         ]),
         style: TextStyle(fontFamily: 'Exo2',fontSize: 36, fontWeight: FontWeight.bold));
   }

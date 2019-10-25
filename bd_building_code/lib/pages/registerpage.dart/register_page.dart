@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 
 Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
+Color grads = Color.fromRGBO(189 , 195 , 199, 1);
+Color grads2 = Color.fromRGBO(44  , 62  , 80, 1);
+Color gradinner1 = Color.fromRGBO(142 , 158 , 171, 1);
+Color gradinner2 = Color.fromRGBO(238, 242 , 243, 1);
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -34,42 +38,133 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
         backgroundColor:backgroundColor ,
         resizeToAvoidBottomInset: true,
-        body: Stack(children: <Widget>[
-        ClipPath(
-        clipper: BottomShapeClipper(),
-        child: Container(
-          color: colorCurve,
-        )),
-          SingleChildScrollView(
-        child: SafeArea(
-          top: true,
-          bottom: false,
-          child: Container(
-            margin: EdgeInsets.symmetric(
-                horizontal: size.getWidthPx(20), vertical: size.getWidthPx(20)),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        body:Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 1],
+                  colors: [
+                    grads,
+                    grads2
+                  ],
+                ),
+              ),
+              child:new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.arrow_back,color: colorCurve,),
-                        onPressed: () => Navigator.pop(context, false),
-                      ),
-                      SizedBox(width: size.getWidthPx(10)),
-                      _signUpGradientText(),
-                    ],
-                  ),
-                  SizedBox(height: size.getWidthPx(10)),
-                  _textAccount(),
-                  SizedBox(height: size.getWidthPx(30)),
-                  registerFields()
-                ]),
-          ),
-        ),
-      )
-    ]));
+                  
+                  registerThings(),
+                ],
+              ) ,
+              ),
+
+              
+            ],
+          )
+        
+        
+        
+    //      Stack(children: <Widget>[
+    //     ClipPath(
+    //     clipper: BottomShapeClipper(),
+    //     child: Container(
+    //       color: colorCurve,
+    //     )),
+    //       SingleChildScrollView(
+    //     child: SafeArea(
+    //       top: true,
+    //       bottom: false,
+    //       child: Container(
+    //         margin: EdgeInsets.symmetric(
+    //             horizontal: size.getWidthPx(20), vertical: size.getWidthPx(20)),
+    //         child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: <Widget>[
+    //               Row(
+    //                 children: <Widget>[
+    //                   IconButton(
+    //                     icon: Icon(Icons.arrow_back,color: colorCurve,),
+    //                     onPressed: () => Navigator.pop(context, false),
+    //                   ),
+    //                   SizedBox(width: size.getWidthPx(10)),
+    //                   _signUpGradientText(),
+    //                 ],
+    //               ),
+    //               SizedBox(height: size.getWidthPx(10)),
+    //               _textAccount(),
+    //               SizedBox(height: size.getWidthPx(30)),
+    //               registerFields()
+    //             ]),
+    //       ),
+    //     ),
+    //   )
+    // ])
+    );
   }
+
+  registerThings(){
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 5.0),
+      padding: const EdgeInsets.all(15.0),
+      decoration: new BoxDecoration(
+        gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 1],
+                  colors: [
+                    gradinner1,
+                    gradinner2
+                  ],
+                ),
+        //you can get rid of below line also
+        borderRadius: new BorderRadius.circular(10.0),
+        //below line is for rectangular shape
+        shape: BoxShape.rectangle,
+        //you can change opacity with color here(I used black) for rect
+        // color: Colors.black.withOpacity(0.5),
+        //I added some shadow, but you can remove boxShadow also.
+        boxShadow: <BoxShadow>[
+          new BoxShadow(
+            color: Colors.white30,
+            blurRadius: 5.0,
+            offset: new Offset(2.0, 2.0),
+          ),
+        ],
+      ),
+      child: new Column(
+        children: <Widget>[
+            SingleChildScrollView(
+              child: SafeArea(
+                top: true,
+                bottom: false,
+                child: Container(
+                  // margin: EdgeInsets.symmetric(
+                  //     horizontal: size.getWidthPx(20), vertical: size.getWidthPx(20)),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        
+                        _signUpGradientText(),
+                          
+                        
+                        SizedBox(height: size.getWidthPx(10)),
+                        _textAccount(),
+                        SizedBox(height: size.getWidthPx(30)),
+                        registerFields()
+                      ]),
+                ),
+              ),
+            )
+        ],
+      ),
+    );
+  
+  }
+
 
   RichText _textAccount() {
     return RichText(
@@ -81,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 color: Color.fromRGBO(58, 58,58, .6)),
               text: 'Login here',
               recognizer: TapGestureRecognizer()
-                ..onTap = () => Navigator.pop(context),
+                ..onTap = () => Navigator.pop(context, false),
             )
           ],
           style: TextStyle(fontFamily: 'Exo2',color: Colors.black87, fontSize: 16)),
