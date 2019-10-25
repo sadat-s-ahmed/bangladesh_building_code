@@ -6,10 +6,16 @@ import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 
 Color backgroundColor = Colors.grey.shade200;
+Color appbarColor = Colors.black;
 Color bg_grad = Color.fromRGBO(58, 58,58,1);
 Color bg_grad2 = Color.fromRGBO(58, 58, 58,.7);
+Color grads = Color.fromRGBO(189 , 195 , 199, 1);
+Color grads2 = Color.fromRGBO(44  , 62  , 80, 1);
+Color gradinner1 = Color.fromRGBO(142 , 158 , 171, 1);
+Color gradinner2 = Color.fromRGBO(238, 242 , 243, 1);
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -19,10 +25,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<HomeCardsDetails> pages = [
-    new HomeCardsDetails("Guide Book", Icons.book, GuidebookPage()),
+    new HomeCardsDetails("Guide Book",'assets/home/catalogue.png' , GuidebookPage()),
     new HomeCardsDetails(
-        "Estimation Unit Converter", Icons.apps, ConversionPage()),
-    new HomeCardsDetails("FAR Calculator", Icons.blur_linear, Far_page()),
+        "Estimation Unit Converter", 'assets/home/calculation.png', ConversionPage()),
+    new HomeCardsDetails("FAR Calculator", 'assets/home/calculation.png', Far_page()),
+    new HomeCardsDetails("Member", 'assets/home/science.png', HomePage()),
+    new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', HomePage()),
   ];
   AnimationController cardEntranceController;
   List<Animation> ticketAnimation;
@@ -63,9 +71,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70.0),
+          preferredSize: Size.fromHeight(60.0),
             child: AppBar(
-            backgroundColor:bg_grad ,
+            backgroundColor:appbarColor ,
             elevation: 0.0,
             centerTitle: true,
             title: new Text(
@@ -100,27 +108,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 leading: Icon(Icons.dashboard),
                 title: new Text("Guide Books"),
                 onTap: () {
-                  Navigator.pop(context);
+                   Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => GuidebookPage()),
+                  );
                 }),
             new ListTile(
                 leading:Icon(Icons.apps),
                 title: new Text("FAR Calculator"),
                 onTap: () {
-                  Navigator.pop(context);
+                   Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => Far_page()),
+                  );
                 }),
             new ListTile(
                 leading: Icon(Icons.settings),
                 title: new Text("Estimation Unit Calculator"),
                 onTap: () {
-                  Navigator.pop(context);
+                   Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ConversionPage()),
+                  );
                 }),
             new Divider(),
-            new ListTile(
-                leading: Icon(Icons.info),
-                title: new Text("About"),
-                onTap: () {
-                  Navigator.pop(context);
-                }),
             new ListTile(
                 leading: Icon(Icons.power_settings_new),
                 title: new Text("Logout"),
@@ -131,16 +139,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
       ),
       body: Stack(
+         fit: StackFit.expand,
         children: <Widget>[
           // HomePageBar(height: 260.0, title: "Bangladesh Building Code"),
-          Positioned.fill(
-            top: MediaQuery.of(context).padding.top,
-            child: SingleChildScrollView(
-              child: Column(
-                children: _buildCards().toList(),
+          Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 1],
+                  colors: [
+                    grads,
+                    grads2
+                  ],
+                ),
               ),
-            ),
-          )
+              child:SingleChildScrollView(
+                    child: Column(
+                      children: _buildCards().toList(),
+                    ),
+                  ),
+              )
+          
         ],
       ),
     );
@@ -159,7 +179,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
           child: Container(
             decoration: BoxDecoration(
-              color: backgroundColor,
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 1],
+                  colors: [
+                    gradinner1,
+                    gradinner2
+                  ],
+                ),
+                shape: BoxShape.rectangle,
               borderRadius: new BorderRadius.all(Radius.circular(15.0))
               ),
             child: makeTiles(page),
@@ -189,11 +218,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   right: new BorderSide(
                     width: 1.0, 
                     color: Colors.black87))),
-          child: Icon(
-              page.iconData,
-             color: Colors.black87,
-             size: 35.0,
-             ),
+          child:  Image.asset(
+              page.image,
+              height: 35,
+              width: 35,
+              fit: BoxFit.fitWidth,
+          )
+          
+          
+          // Icon(
+          //     page.iconData,
+          //    color: Colors.black87,
+          //    size: 35.0,
+          //    ),
         ),
         title: Text(
           page.title,

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class HomeCardsDetails {
   String title;
-  IconData iconData;
+  String image;
   Widget to;
 
-  HomeCardsDetails(this.title, this.iconData, this.to);
+  HomeCardsDetails(this.title, this.image, this.to);
 }

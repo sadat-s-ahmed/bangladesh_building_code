@@ -41,6 +41,7 @@ dev_dependencies:
   path_provider:
   http:  
   url_launcher:
+  flat_icons_flutter: ^1.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,6 +67,11 @@ flutter:
    - assets/icons/imgforgot.png
    - assets/sketch.png
    - assets/home.png
+   - assets/home/architecture-and-city.png
+   - assets/home/calculation.png
+   - assets/home/calculator.png
+   - assets/home/catalogue.png
+   - assets/home/science.png
 
    
 
