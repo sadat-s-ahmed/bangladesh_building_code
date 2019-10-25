@@ -49,11 +49,6 @@ class _PageForgotPasswordState extends State<PageForgotPassword> {
             resizeToAvoidBottomInset: false,
 
             body: Stack(children: <Widget>[
-              ClipPath(
-                  clipper: BottomShapeClipper(),
-                  child: Container(
-                    color: colorCurve,
-                  )),
               Center(
                 child: SingleChildScrollView(
               child: Form(
@@ -95,7 +90,7 @@ class _PageForgotPasswordState extends State<PageForgotPassword> {
     return GradientText('Forgot password',
         gradient: LinearGradient(colors: [
            Color.fromRGBO(58, 58, 58,1),
-          Color.fromRGBO(58, 58, 58, .4)
+          Color.fromRGBO(58, 58, 58, .7)
         ]),
         style: TextStyle(
             fontFamily: 'Exo2', fontSize: 30, fontWeight: FontWeight.bold));
