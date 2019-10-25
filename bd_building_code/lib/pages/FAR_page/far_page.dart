@@ -9,7 +9,7 @@ import 'package:dropdownfield/dropdownfield.dart';
 Color backgroundColor = Colors.grey.shade200;
 Color bg_grad = Color.fromRGBO(58, 58,58,1);
 Color bg_grad2 = Color.fromRGBO(58, 58, 58,.7);
-
+Color appbarColor = Colors.black;
 
 class Far_page extends StatefulWidget {
   Far_page({Key key}) : super(key: key);
@@ -54,7 +54,7 @@ class _Far_pageState extends State<Far_page> {
       appBar:PreferredSize(
           preferredSize: Size.fromHeight(70.0),
             child: AppBar(
-            backgroundColor:bg_grad ,
+            backgroundColor:appbarColor ,
             elevation: 0.0,
             centerTitle: true,
             title: new Text(
@@ -233,7 +233,7 @@ class _Far_pageState extends State<Far_page> {
                     width: double.infinity,
                     height: 50.0,
                     child:RaisedButton(
-                      color: bg_grad2,  
+                      color: appbarColor,  
                       onPressed: _validateInputs,
                       child: new Text('Generate' ,
                         style:TextStyle(

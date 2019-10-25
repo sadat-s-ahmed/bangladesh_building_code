@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<HomeCardsDetails> pages = [
     new HomeCardsDetails("Guide Book",'assets/home/catalogue.png' , GuidebookPage()),
     new HomeCardsDetails(
-        "Estimation Unit Converter", 'assets/home/calculation.png', ConversionPage()),
+        "Estimation Unit Converter", 'assets/home/calculator.png', ConversionPage()),
     new HomeCardsDetails("FAR Calculator", 'assets/home/calculation.png', Far_page()),
     new HomeCardsDetails("Member", 'assets/home/science.png', HomePage()),
     new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', HomePage()),
@@ -105,16 +105,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             new ListTile(
-                leading: Icon(Icons.dashboard),
-                title: new Text("Guide Books"),
+                leading: Icon(Icons.verified_user),
+                title: new Text("Profile"),
                 onTap: () {
                    Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => GuidebookPage()),
                   );
                 }),
             new ListTile(
-                leading:Icon(Icons.apps),
-                title: new Text("FAR Calculator"),
+                leading:Icon(Icons.bug_report),
+                title: new Text("Report Issue"),
                 onTap: () {
                    Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => Far_page()),
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 }),
             new ListTile(
                 leading: Icon(Icons.settings),
-                title: new Text("Estimation Unit Calculator"),
+                title: new Text("Settings"),
                 onTap: () {
                    Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => ConversionPage()),

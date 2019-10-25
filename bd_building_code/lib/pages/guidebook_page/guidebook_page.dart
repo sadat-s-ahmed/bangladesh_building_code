@@ -12,7 +12,7 @@ Color backgroundColor = Colors.grey.shade200;
 Color bg_grad = Color.fromRGBO(58, 58,58,1);
 Color bg_grad2 = Color.fromRGBO(58, 58, 58,.7);
 
-
+Color appbarColor = Colors.black;
 class GuidebookPage extends StatefulWidget {
   @override
   _GuidebookPageState createState() => _GuidebookPageState();
@@ -58,9 +58,9 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:PreferredSize(
-          preferredSize: Size.fromHeight(70.0),
+          preferredSize: Size.fromHeight(60.0),
             child: AppBar(
-            backgroundColor:bg_grad ,
+            backgroundColor:appbarColor ,
             elevation: 0.0,
             centerTitle: true,
             title: new Text(
@@ -113,11 +113,12 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
                                   right: new BorderSide(
                                     width: 1.0, 
                                     color: Colors.black87))),
-                          child: Icon(
-                              Icons.location_city,
-                            color: Colors.black87,
-                            size: 35.0,
-                            ),
+                          child: Image.asset(
+                              'assets/home/buildings.png',
+                              height: 35,
+                              width: 35,
+                              fit: BoxFit.fitWidth,
+                          ),
                         ),
                         title: Text(
                           'BNBC ',
@@ -160,11 +161,12 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
                                   right: new BorderSide(
                                     width: 1.0, 
                                     color: Colors.black87))),
-                          child: Icon(
-                              Icons.location_city,
-                            color: Colors.black87,
-                            size: 35.0,
-                            ),
+                          child: Image.asset(
+                              'assets/home/notebook.png',
+                              height: 35,
+                              width: 35,
+                              fit: BoxFit.fitWidth,
+                          ),
                         ),
                         title: Text(
                           'Imarat Nirman Bidhimala ',
@@ -208,11 +210,12 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
                                   right: new BorderSide(
                                     width: 1.0, 
                                     color: Colors.black87))),
-                          child: Icon(
-                              Icons.location_city,
-                            color: Colors.black87,
-                            size: 35.0,
-                            ),
+                          child: Image.asset(
+                              'assets/home/contract-1.png',
+                              height: 35,
+                              width: 35,
+                              fit: BoxFit.fitWidth,
+                          ),
                         ),
                         title: Text(
                           'Daag ',
