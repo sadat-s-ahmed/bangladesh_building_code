@@ -36,12 +36,10 @@ dev_dependencies:
   decimal: ^0.3.5
   dropdownfield: ^1.0.3
   direct_select_flutter: ^1.0.4
-  flutter_plugin_pdf_viewer: any
-  flutter_pdfview: ^1.0.0+9
   path_provider:
   http:  
-  url_launcher:
   flat_icons_flutter: ^1.0.2
+  pdf_render:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -75,6 +73,11 @@ flutter:
    - assets/home/buildings.png
    - assets/home/notebook.png
    - assets/home/contract-1.png
+   - assets/BNBC.pdf
+   - assets/daag.pdf
+   - assets/imarat_nirman.pdf
+
+   
 
    
 

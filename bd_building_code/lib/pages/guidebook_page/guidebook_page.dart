@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:pdf_render/pdf_render.dart';
+import 'package:pdf_render/pdf_render_widgets.dart';
 
 Color backgroundColor = Colors.grey.shade200;
 Color bg_grad = Color.fromRGBO(58, 58,58,1);
@@ -101,7 +101,7 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
                       child: GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Pdfviewer(title: 'BNBC',)),
+                          MaterialPageRoute(builder: (context) => Pdfviewer(title: 'BNBC',url: 'assets/BNBC.pdf',)),
                         );
                       },
                       child: ListTile(
@@ -149,7 +149,7 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
                       child: GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Pdfviewer(title: 'Imarat Nirman Bidhimala',)),
+                          MaterialPageRoute(builder: (context) => Pdfviewer(title: 'Imarat Nirman Bidhimala',url: 'assets/imarat_nirman.pdf',)),
                         );
                       },
                       child: ListTile(
@@ -198,7 +198,7 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
                       child: GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Pdfviewer(title:'Daag',)),
+                          MaterialPageRoute(builder: (context) => Pdfviewer(title:'Daag',url: 'assets/daag.pdf' )),
                         );
                       },
                       child: ListTile(
@@ -268,26 +268,17 @@ class Pdfviewer extends StatefulWidget {
 }
 
 class _PdfviewerState extends State<Pdfviewer> {
-  PDFDocument book ;
-  bool _isloading = true ;
-  @override
-  void initState() { 
-    super.initState();
-    _loadPDF();
-  }
-   _loadPDF() async{
-    PDFDocument doc = await PDFDocument.fromURL('https://www.ets.org/Media/Tests/GRE/pdf/gre_research_validity_data.pdf');
-    this.setState((){
-      book = doc;
-      _isloading = false;
-    });
-   }
+  static const scale = 100.0 / 72.0;
+  static const margin = 4.0;
+  static const padding = 1.0;
+  static const wmargin = (margin + padding) * 2;
+
   Widget build(BuildContext context) {
     return Scaffold(
           appBar:PreferredSize(
-          preferredSize: Size.fromHeight(70.0),
+          preferredSize: Size.fromHeight(60.0),
             child: AppBar(
-            backgroundColor:bg_grad ,
+            backgroundColor:appbarColor ,
             elevation: 0.0,
             centerTitle: true,
             title: new Text(
@@ -299,14 +290,33 @@ class _PdfviewerState extends State<Pdfviewer> {
               ),
           ),
       ) ,
-          body: Container(
-         child:  Center(
-            child: _isloading 
-                  ? Center(child: CircularProgressIndicator(),)
-                  : PDFViewer(document: this.book)
-          ),
-      ),
-    );
+      body: Center(
+          child: PdfDocumentLoader(
+            assetName: widget.url,
+            documentBuilder: (context, pdfDocument, pageCount) => LayoutBuilder(
+              builder: (context, constraints) => ListView.builder(
+                itemCount: pageCount,
+                itemBuilder: (context, index) => Container(
+                  margin: EdgeInsets.all(margin),
+                  padding: EdgeInsets.all(padding),
+                  color: Colors.black12,
+                  child: PdfPageView(
+                    pdfDocument: pdfDocument,
+                    pageNumber: index + 1,
+                    // calculateSize is used to calculate the rendering page size
+                    calculateSize: (pageWidth, pageHeight, aspectRatio) =>
+                      Size(
+                        constraints.maxWidth - wmargin,
+                        (constraints.maxWidth - wmargin) / aspectRatio)
+                  )
+                )
+              )
+            ),
+          )
+        )
+      );
+
+  
   }
 }
 
