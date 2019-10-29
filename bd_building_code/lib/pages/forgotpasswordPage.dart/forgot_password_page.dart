@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
-
 class PageForgotPassword extends StatefulWidget {
   @override
   _PageForgotPasswordState createState() => _PageForgotPasswordState();
@@ -79,6 +78,7 @@ class _PageForgotPasswordState extends State<PageForgotPassword> {
           Text(
             "Please fill your details below",
             style: TextStyle(
+                color:colorCurve ,
                 fontFamily: 'Exo2',
                 fontSize: 16.0,
                 fontStyle: FontStyle.normal),
@@ -113,6 +113,9 @@ class _PageForgotPasswordState extends State<PageForgotPassword> {
       validator: validateEmail,
       icon: Icons.email,
       iconColor: colorCurve,
+      style: TextStyle(
+        color: colorCurve
+      ),
     );
   }
 

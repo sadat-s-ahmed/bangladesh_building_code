@@ -59,8 +59,8 @@ class _LoginPageState extends State<LoginPage> {
               Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   stops: [0, 1],
                   colors: [
                     grads,
@@ -135,8 +135,8 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.all(15.0),
       decoration: new BoxDecoration(
         gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   stops: [0, 1],
                   colors: [
                     gradinner1,

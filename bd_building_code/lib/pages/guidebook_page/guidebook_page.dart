@@ -1,62 +1,75 @@
 import 'dart:io';
 
+import 'package:bd_building_code/models/home_card_details.dart';
+import 'package:bd_building_code/pages/guidebook_page/Pdfviewer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:pdf_render/pdf_render.dart';
-import 'package:pdf_render/pdf_render_widgets.dart';
+
 
 Color backgroundColor = Colors.grey.shade200;
+Color appbarColor = Colors.black;
 Color bg_grad = Color.fromRGBO(58, 58,58,1);
 Color bg_grad2 = Color.fromRGBO(58, 58, 58,.7);
-
-Color appbarColor = Colors.black;
+Color grads = Color.fromRGBO(189 , 195 , 199, 1);
+Color grads2 = Color.fromRGBO(44  , 62  , 80, 1);
+Color gradinner1 = Color.fromRGBO(142 , 158 , 171, 1);
+Color gradinner2 = Color.fromRGBO(238, 242 , 243, 1);
 class GuidebookPage extends StatefulWidget {
   @override
   _GuidebookPageState createState() => _GuidebookPageState();
 }
 
-class _GuidebookPageState extends State<GuidebookPage> {
-//  String assetsPDFpath =  '';
-//  String urlPDFPath = ''; 
-//  bool pdfReady = false ;
-//  int _totalPages =  0;
-//  int _currentPages = 0;
-//  PDFViewController _pdfViewController;
-String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convertedpdf.pdf';
+class _GuidebookPageState extends State<GuidebookPage> with TickerProviderStateMixin {
+  List<HomeCardsDetails> pages = [
+      new HomeCardsDetails("BNBC",'assets/home/buildings.png' , Pdfviewer(title: 'BNBC',url: 'assets/BNBC.pdf',)),
+      new HomeCardsDetails(
+          "Imarat Nirman Bidhimala ", 'assets/home/notebook.png', Pdfviewer(title: 'Imarat Nirman Bidhimala',url: 'assets/imarat_nirman.pdf',)),
+      new HomeCardsDetails("Daag", 'assets/home/contract-1.png',Pdfviewer(title:'Daag',url: 'assets/daag.pdf' ))
+    ];
+  AnimationController cardEntranceController ; 
+  List<Animation> ticketAnimation ;
+  Animation fabAnimation ;
+
+  
   @override
   void initState() {
     super.initState();
-    // getFileFromAsset('assets/BNBC.pdf')
-    //   .then((f){
-    //     setState((){
-    //       assetsPDFpath = f.path;
-    //       pdfReady = true;
-    //     });
-    //     print(assetsPDFpath);
-    //   });
+   cardEntranceController =  new AnimationController(
+     vsync: this ,
+     duration: Duration(milliseconds: 1100)
+   );
+   ticketAnimation = pages.map((stop){
+     int index = pages.indexOf(stop) ;
+     double start = index * 0.1;
+     double duration = 0.6 ;
+     double end = duration + start ;
+     return new Tween<double>(begin: 800.0 , end: 0.0 ).animate(
+       new CurvedAnimation(
+         parent:cardEntranceController,
+         curve: new Interval(start, end , curve: Curves.decelerate)
+       )
+     );
+   }).toList();
+   fabAnimation = new CurvedAnimation(
+     parent: cardEntranceController ,
+     curve: Interval(0.1, 1.0 , curve:  Curves.decelerate)
+   );
+
+   cardEntranceController.forward();
+  }
+
+  @override
+  void dispose() {
+    cardEntranceController.dispose();
+    super.dispose();
   }
  
-//  Future<File> getFileFromAsset(String asset) async {
-//     try {
-
-//       var data = await rootBundle.load(asset);
-//       var bytes= data.buffer.asUint8List();
-//       var dir = await getApplicationDocumentsDirectory();
-//       File file = new File("${dir.path}/BNBC.pdf");
-//       File assetFile = await file.writeAsBytes(bytes);
-//       return assetFile ;
-
-//     } catch (e) {
-//       throw Exception('Error Loading asset file');
-//     }
-//   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar:PreferredSize(
           preferredSize: Size.fromHeight(60.0),
             child: AppBar(
@@ -86,153 +99,7 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
             top: MediaQuery.of(context).padding.top,
             child: SingleChildScrollView(
               child: Column(
-                children: <Widget>[
-                  Card(
-                    elevation: 8.0,
-                    borderOnForeground: true,
-                  
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-                    margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white38,
-                        borderRadius: new BorderRadius.all(Radius.circular(15.0))
-                        ),
-                      child: GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Pdfviewer(title: 'BNBC',url: 'assets/BNBC.pdf',)),
-                        );
-                      },
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                        leading: Container(
-                          padding: EdgeInsets.only(right: 12.0),
-                          decoration: new BoxDecoration(
-                              border: new Border(
-                                  right: new BorderSide(
-                                    width: 1.0, 
-                                    color: Colors.black87))),
-                          child: Image.asset(
-                              'assets/home/buildings.png',
-                              height: 35,
-                              width: 35,
-                              fit: BoxFit.fitWidth,
-                          ),
-                        ),
-                        title: Text(
-                          'BNBC ',
-                          style: TextStyle(
-                            color: Colors.black87, 
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0
-                            ),
-                        ),
-                        trailing:
-                            Icon(Icons.keyboard_arrow_right, color: Colors.black87, size: 30.0),
-                      ),
-                    ),
-                    ),
-                  ) ,
-
-                  Card(
-                    elevation: 8.0,
-                    borderOnForeground: true,
-                  
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-                    margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white38,
-                        borderRadius: new BorderRadius.all(Radius.circular(15.0))
-                        ),
-                      child: GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Pdfviewer(title: 'Imarat Nirman Bidhimala',url: 'assets/imarat_nirman.pdf',)),
-                        );
-                      },
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                        leading: Container(
-                          padding: EdgeInsets.only(right: 12.0),
-                          decoration: new BoxDecoration(
-                              border: new Border(
-                                  right: new BorderSide(
-                                    width: 1.0, 
-                                    color: Colors.black87))),
-                          child: Image.asset(
-                              'assets/home/notebook.png',
-                              height: 35,
-                              width: 35,
-                              fit: BoxFit.fitWidth,
-                          ),
-                        ),
-                        title: Text(
-                          'Imarat Nirman Bidhimala ',
-                          style: TextStyle(
-                            color: Colors.black87, 
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0
-                            ),
-                        ),
-                        trailing:
-                            Icon(Icons.keyboard_arrow_right, color: Colors.black87, size: 30.0),
-                      ),
-                    ),
-                    ),
-                  )
-                  ,
-
-                  Card(
-                    elevation: 8.0,
-                    borderOnForeground: true,
-                  
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-                    margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white38,
-                        borderRadius: new BorderRadius.all(Radius.circular(15.0))
-                        ),
-                      child: GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Pdfviewer(title:'Daag',url: 'assets/daag.pdf' )),
-                        );
-                      },
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                        leading: Container(
-                          padding: EdgeInsets.only(right: 12.0),
-                          decoration: new BoxDecoration(
-                              border: new Border(
-                                  right: new BorderSide(
-                                    width: 1.0, 
-                                    color: Colors.black87))),
-                          child: Image.asset(
-                              'assets/home/contract-1.png',
-                              height: 35,
-                              width: 35,
-                              fit: BoxFit.fitWidth,
-                          ),
-                        ),
-                        title: Text(
-                          'Daag ',
-                          style: TextStyle(
-                            color: Colors.black87, 
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0
-                            ),
-                        ),
-                        trailing:
-                            Icon(Icons.keyboard_arrow_right, color: Colors.black87, size: 30.0),
-                      ),
-                    ),
-                    ),
-                  )
-                  
-                ],
+                children: _buildCards().toList(),
               ),
             ),
           )
@@ -241,158 +108,87 @@ String bnbc = 'https://pdfhost.io/v/jhSyHvvWM_BNBC_2015_FINAL_DRAFT_PART1convert
       ),
     );
   }
-}
 
-// PDFDocument book ;
-  // bool _isloading = true ;
-//  Center(
-//           child: _isloading 
-//                 ? Center(child: CircularProgressIndicator(),)
-//                 : PDFViewer(document: this.book)
-//         )
-
- // _loadPDF() async{
-  //   PDFDocument doc = await PDFDocument.fromURL('https://www.ets.org/Media/Tests/GRE/pdf/gre_research_validity_data.pdf');
-  //   this.setState((){
-  //     book = doc;
-  //     _isloading = false;
-  //   });
-  
-
-class Pdfviewer extends StatefulWidget {
-  final String url ;
-  final String title ;
-  Pdfviewer({Key key, this.url , this.title}) : super(key: key);
-
-  _PdfviewerState createState() => _PdfviewerState();
-}
-
-class _PdfviewerState extends State<Pdfviewer> {
-  static const scale = 100.0 / 72.0;
-  static const margin = 4.0;
-  static const padding = 1.0;
-  static const wmargin = (margin + padding) * 2;
-
-  Widget build(BuildContext context) {
-    return Scaffold(
-          appBar:PreferredSize(
-          preferredSize: Size.fromHeight(60.0),
-            child: AppBar(
-            backgroundColor:appbarColor ,
-            elevation: 0.0,
-            centerTitle: true,
-            title: new Text(
-                '${widget.title}',
-                style: TextStyle(
-                     fontWeight: FontWeight.bold,
-                     color: Colors.white
-                     ),
+  Iterable<Widget>  _buildCards(){
+  return pages.map((page){
+    int index = pages.indexOf(page);
+    return AnimatedBuilder(
+      animation: cardEntranceController,
+      child: Card(
+          elevation: 8.0,
+          borderOnForeground: true,
+        
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.bottomRight,
+                  end: Alignment.topLeft,
+                  stops: [0, 1],
+                  colors: [
+                    gradinner1,
+                    gradinner2
+                  ],
+                ),
+                shape: BoxShape.rectangle,
+              borderRadius: new BorderRadius.all(Radius.circular(15.0))
               ),
+            child: makeTiles(page),
           ),
-      ) ,
-      body: Center(
-          child: PdfDocumentLoader(
-            assetName: widget.url,
-            documentBuilder: (context, pdfDocument, pageCount) => LayoutBuilder(
-              builder: (context, constraints) => ListView.builder(
-                itemCount: pageCount,
-                itemBuilder: (context, index) => Container(
-                  margin: EdgeInsets.all(margin),
-                  padding: EdgeInsets.all(padding),
-                  color: Colors.black12,
-                  child: PdfPageView(
-                    pdfDocument: pdfDocument,
-                    pageNumber: index + 1,
-                    // calculateSize is used to calculate the rendering page size
-                    calculateSize: (pageWidth, pageHeight, aspectRatio) =>
-                      Size(
-                        constraints.maxWidth - wmargin,
-                        (constraints.maxWidth - wmargin) / aspectRatio)
-                  )
-                )
-              )
-            ),
-          )
-        )
-      );
-
-  
+        ),
+        builder: (context , child ) =>  new Transform.translate(
+          offset: Offset(0.0 , ticketAnimation[index].value),
+          child: child,
+        ),
+    );
+    
+  });
   }
+
+  Widget makeTiles(HomeCardsDetails page) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => page.to),
+        );
+      },
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        leading: Container(
+          padding: EdgeInsets.only(right: 12.0),
+          decoration: new BoxDecoration(
+              border: new Border(
+                  right: new BorderSide(
+                    width: 1.0, 
+                    color: Colors.black87))),
+          child:  Image.asset(
+              page.image,
+              height: 35,
+              width: 35,
+              fit: BoxFit.fitWidth,
+          )
+        ),
+        title: Text(
+          page.title,
+          style: TextStyle(
+            color: Colors.black87, 
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0
+            ),
+        ),
+        trailing:
+            Icon(Icons.keyboard_arrow_right, color: Colors.black87, size: 30.0),
+      ),
+    );
+  }
+
 }
 
 
 
-  // return Scaffold(
-  //     appBar: AppBar(
-  //       centerTitle: true,
-  //       backgroundColor: Colors.white,
-  //       title: Text('Building Code Book' ,
-  //         style: TextStyle(color: Colors.black),
-  //         ),
-  //         leading: IconButton(
-  //           icon: Icon(
-  //             Icons.arrow_back_ios,
-  //             color: Colors.blueAccent,
-  //           ),
-  //           onPressed: (){
-  //             Navigator.pop(context);
-  //           },
-  //         ),
-  //     ),
-  //     body:Stack(
-  //       children: <Widget>[
-  //         !pdfReady ? 
-  //           Center(child: CircularProgressIndicator(),) : 
-  //           PDFView(
-  //           filePath: assetsPDFpath,
-  //           autoSpacing: true,
-  //           enableSwipe: true,
-  //           swipeHorizontal: true,
-  //           onError: (e){print(e);},
-  //           onRender: (_pages){
-  //             setState(() {
-  //              _totalPages = _pages;
-                
-  //             });
-  //           },
-  //           onViewCreated: (PDFViewController vc){
-  //             _pdfViewController = vc;
-  //           },
-  //           onPageChanged: (int page , int total){
-  //             setState(() {
-                
-  //             });
-  //           },
-  //         )
-  //       ],
-  //     ),
-  //     floatingActionButton: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: <Widget>[
-  //         _currentPages >0 ? 
-  //           FloatingActionButton.extended(
-  //             backgroundColor: Colors.red,
-  //             label:Text("Page ${_currentPages-1}"),
-  //             onPressed: (){
-  //               _currentPages -= 1;
-  //               _pdfViewController.setPage(_currentPages);
-  //               print(_pdfViewController.toString());
-  //             },
-  //           ) :
-  //           Offstage(),
-  //           _currentPages < _totalPages ? 
-  //           FloatingActionButton.extended(
-  //             backgroundColor: Colors.green,
-  //             label:Text("Page ${_currentPages + 1}"),
-  //             onPressed: (){
-  //               _currentPages += 1;
-  //               _pdfViewController.setPage(_currentPages);
-  //               print(_pdfViewController.toString());
-  //             },
-  //           ) :
-  //           Offstage(),
 
-  //       ],
-  //     ),
-  //   );
-  // }
+
+
+
+ 

@@ -1,4 +1,4 @@
-import 'package:bd_building_code/component/homepage_bar.dart';
+
 import 'package:bd_building_code/models/home_card_details.dart';
 import 'package:bd_building_code/pages/FAR_page/far_page.dart';
 import 'package:bd_building_code/pages/guidebook_page/guidebook_page.dart';
@@ -6,7 +6,6 @@ import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 
 Color backgroundColor = Colors.grey.shade200;
 Color appbarColor = Colors.black;
@@ -23,7 +22,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage>{
   List<HomeCardsDetails> pages = [
     new HomeCardsDetails("Guide Book",'assets/home/catalogue.png' , GuidebookPage()),
     new HomeCardsDetails(
@@ -32,44 +31,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     new HomeCardsDetails("Member", 'assets/home/science.png', HomePage()),
     new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', HomePage()),
   ];
-  AnimationController cardEntranceController;
-  List<Animation> ticketAnimation;
-  Animation fabAnimation;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    cardEntranceController = new AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 1100),
-    );
-    ticketAnimation = pages.map((stop) {
-      int index = pages.indexOf(stop);
-      double start = index * 0.1;
-      double duration = 0.6;
-      double end = duration + start;
-      return new Tween<double>(begin: 800.0, end: 0.0).animate(
-          new CurvedAnimation(
-              parent: cardEntranceController,
-              curve: new Interval(start, end, curve: Curves.decelerate)));
-    }).toList();
-    fabAnimation = new CurvedAnimation(
-        parent: cardEntranceController,
-        curve: Interval(0.7, 1.0, curve: Curves.decelerate));
-    cardEntranceController.forward();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    cardEntranceController.dispose();
-    super.dispose();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(60.0),
             child: AppBar(
@@ -138,92 +104,160 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
       ),
-      body: Stack(
-         fit: StackFit.expand,
-        children: <Widget>[
-          // HomePageBar(height: 260.0, title: "Bangladesh Building Code"),
-          Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0, 1],
-                  colors: [
-                    grads,
-                    grads2
-                  ],
+      body:Padding(
+        padding: EdgeInsets.all(10.0),
+        child: GridView.builder(
+          padding: const EdgeInsets.all(5),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2 ,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10
+                      ),
+          itemCount: pages.length,            
+          itemBuilder: (BuildContext context, int index) {            
+              return getStructuredGridCell(pages[index]);
+            }
+  
+        ),
+      
+      
+      )
+      );
+  }
+
+  Widget getStructuredGridCell(HomeCardsDetails page) {
+    return InkWell(
+          onTap:(){
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => page.to),
+            );
+          } ,
+          child: new Card(
+
+          color: Colors.grey[50],
+          elevation: 1.2,
+          child: Center(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              verticalDirection: VerticalDirection.down,
+              children: <Widget>[
+                Image.asset(
+                    page.image,
+                    height: 60,
+                    width: 35,
+                    fit: BoxFit.contain,
                 ),
-              ),
-              child:SingleChildScrollView(
-                    child: Column(
-                      children: _buildCards().toList(),
+                new Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Center(
+                    child: Text(
+                      page.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black87, 
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0
+                        ),
                     ),
                   ),
-              )
-          
-        ],
-      ),
+                )
+              ],
+            ),
+          )),
     );
   }
 
-  Iterable<Widget> _buildCards() {
-    return pages.map((page) {
-      int index = pages.indexOf(page);
-      return AnimatedBuilder(
-        animation: cardEntranceController,
-        child: Card(
-          elevation: 8.0,
-          borderOnForeground: true,
-        
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0, 1],
-                  colors: [
-                    gradinner1,
-                    gradinner2
-                  ],
-                ),
-                shape: BoxShape.rectangle,
-              borderRadius: new BorderRadius.all(Radius.circular(15.0))
-              ),
-            child: makeTiles(page),
-          ),
-        ),
-        builder: (context, child) => new Transform.translate(
-          offset: Offset(0.0, ticketAnimation[index].value),
-          child: child,
-        ),
-      );
-    });
-  }
 
-  Widget makeTiles(HomeCardsDetails page) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => page.to),
-        );
-      },
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-        leading: Container(
-          padding: EdgeInsets.only(right: 12.0),
-          decoration: new BoxDecoration(
-              border: new Border(
-                  right: new BorderSide(
-                    width: 1.0, 
-                    color: Colors.black87))),
-          child:  Image.asset(
-              page.image,
-              height: 35,
-              width: 35,
-              fit: BoxFit.fitWidth,
-          )
+}
+
+      // Stack(
+      //    fit: StackFit.expand,
+      //   children: <Widget>[
+      //     // HomePageBar(height: 260.0, title: "Bangladesh Building Code"),
+      //     Container(
+      //         decoration: BoxDecoration(
+      //           gradient: LinearGradient(
+      //             begin: Alignment.topCenter,
+      //             end: Alignment.bottomCenter,
+      //             stops: [0, 1],
+      //             colors: [
+      //               grads,
+      //               grads2
+      //             ],
+      //           ),
+      //         ),
+      //         child:SingleChildScrollView(
+      //               child: Column(
+      //                 children: _buildCards().toList(),
+      //               ),
+      //             ),
+      //         )
+          
+      //   ],
+      // ),
+  //   )
+  //   );
+  // }
+
+  // Iterable<Widget> _buildCards() {
+  //   return pages.map((page) {
+  //     int index = pages.indexOf(page);
+  //     return AnimatedBuilder(
+  //       animation: cardEntranceController,
+  //       child: Card(
+  //         elevation: 8.0,
+  //         borderOnForeground: true,
+        
+  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+  //         margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //             gradient: LinearGradient(
+  //                 begin: Alignment.topCenter,
+  //                 end: Alignment.bottomCenter,
+  //                 stops: [0, 1],
+  //                 colors: [
+  //                   gradinner1,
+  //                   gradinner2
+  //                 ],
+  //               ),
+  //               shape: BoxShape.rectangle,
+  //             borderRadius: new BorderRadius.all(Radius.circular(15.0))
+  //             ),
+  //           child: makeTiles(page),
+  //         ),
+  //       ),
+  //       builder: (context, child) => new Transform.translate(
+  //         offset: Offset(0.0, ticketAnimation[index].value),
+  //         child: child,
+  //       ),
+  //     );
+  //   });
+  // }
+
+  // Widget makeTiles(HomeCardsDetails page) {
+  //   return GestureDetector(
+  //     onTap: (){
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(builder: (context) => page.to),
+        // );
+  //     },
+  //     child: ListTile(
+  //       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        // leading: Container(
+        //   padding: EdgeInsets.only(right: 12.0),
+        //   decoration: new BoxDecoration(
+        //       border: new Border(
+        //           right: new BorderSide(
+        //             width: 1.0, 
+        //             color: Colors.black87))),
+        //   child:  Image.asset(
+        //       pages.image,
+        //       height: 35,
+        //       width: 35,
+        //       fit: BoxFit.fitWidth,
+        //   )
           
           
           // Icon(
@@ -231,18 +265,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           //    color: Colors.black87,
           //    size: 35.0,
           //    ),
-        ),
-        title: Text(
-          page.title,
-          style: TextStyle(
-            color: Colors.black87, 
-            fontWeight: FontWeight.bold,
-            fontSize: 18.0
-            ),
-        ),
-        trailing:
-            Icon(Icons.keyboard_arrow_right, color: Colors.black87, size: 30.0),
-      ),
-    );
-  }
-}
+        // ),
+        // title: Text(
+        //   page.title,
+        //   style: TextStyle(
+        //     color: Colors.black87, 
+        //     fontWeight: FontWeight.bold,
+        //     fontSize: 18.0
+        //     ),
+        // ),
+  //       trailing:
+  //           Icon(Icons.keyboard_arrow_right, color: Colors.black87, size: 30.0),
+  //     ),
+  //   );
+  // }
+

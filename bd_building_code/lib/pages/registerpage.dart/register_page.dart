@@ -44,8 +44,8 @@ class _SignUpPageState extends State<SignUpPage> {
               Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                   begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   stops: [0, 1],
                   colors: [
                     grads,
@@ -112,8 +112,8 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.all(15.0),
       decoration: new BoxDecoration(
         gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   stops: [0, 1],
                   colors: [
                     gradinner1,

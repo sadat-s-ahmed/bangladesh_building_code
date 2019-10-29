@@ -129,7 +129,7 @@ class _BoxFieldState extends State<BoxField> {
                     borderRadius:  BorderRadius.circular(8.0)),
                 child:  TextFormField(
                   key: widget.key,
-                  style: TextStyle(fontFamily: 'Exo2'),
+                  style: TextStyle(fontFamily: 'Exo2',color: Colors.black),
                   obscureText: widget.obscureText,
                   controller: widget.controller,
                   onSaved: widget.onSaved,
@@ -142,7 +142,7 @@ class _BoxFieldState extends State<BoxField> {
                         color: widget.iconColor,
                         size: size.getWidthPx(22),
                       ),
-                      hintText: widget.hintText),
+                      hintText: widget.hintText ,hintStyle: TextStyle(color: Colors.black)),
                 ),
               )),
         ],

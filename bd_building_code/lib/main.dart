@@ -20,9 +20,23 @@ void main(){
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  ThemeData _themeData = ThemeData(
+    brightness: Brightness.dark,
+    cardColor: Colors.black ,
+    primaryColor: Colors.lightBlue[800],
+    accentColor: Colors.cyan[600],
+
+    textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+    )
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme:_themeData ,
       title: 'Bangladesh Building Code',
       home: AnimatedSplash(
         imagePath: 'assets/bd_code.png',
