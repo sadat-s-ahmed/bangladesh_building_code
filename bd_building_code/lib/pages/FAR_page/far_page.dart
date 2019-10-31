@@ -1,9 +1,10 @@
+import 'package:bd_building_code/component/DecimalTextInputFormatter.dart';
 import 'package:flutter/material.dart';
 import 'package:bd_building_code/component/boxfeild.dart';
 import 'package:bd_building_code/component/gradient_text.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/services.dart';
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 
 Color backgroundColor = Colors.grey.shade200;
@@ -23,30 +24,71 @@ class _Far_pageState extends State<Far_page> {
   TextEditingController _areaController = new TextEditingController();
   TextEditingController _lengthController = new TextEditingController();
   TextEditingController _widthController = new TextEditingController();
-    String _length , _width;
+    int _length , _width;
     int  _area ;
     final _formKey = GlobalKey<FormState>();
-    Map<String, dynamic> formData;
-  String ptype ;
-  String  btype ;  
-  List<String> plottype = [
-    'Square meters',
-    'Katha'
+  Map<String, dynamic> formData;
+  var ptype ;
+  var  btype ;  
+  List plottype = [
+    {
+      "display": "Square meters",
+      "value": 1,
+    },
+    {
+      "display": "Katha",
+      "value": 2,
+    }
   ];
-  List<String> buildings = [
-    'Residential Building',
-    'Residential Hotel',
-    'School/College/University',
-    'Institute',
-    'Health Complex',
-    'Religious/Cultural Building',
-    'Office building',
-    'Shopping Complex',
-    'Industrial Building/Warehouse'
+  List buildings = [
+    {
+      "display": "Residential Building",
+      "value": 1,
+    },
+    {
+      "display": "Residential Hotel",
+      "value": 2,
+    },
+    {
+      "display": "School/College/University",
+      "value": 3,
+    },
+    {
+      "display": "Institute",
+      "value": 4,
+    },
+    {
+      "display": "Health Complex",
+      "value": 5,
+    },
+    {
+      "display": "Religious/Cultural Building",
+      "value": 6,
+    },
+    {
+      "display": "Office building",
+      "value": 7,
+    },
+    {
+      "display": "Shopping Complex",
+      "value": 8,
+    },
+    {
+      "display": "Industrial Building/Warehouse",
+      "value": 9,
+    }
   ];
- 
+  
 
-
+  @override
+  void initState() {
+    ptype = 1 ;
+    btype = 1 ;  
+    _area = 0 ;
+    _length = 0 ;
+    _width= 0 ;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +150,7 @@ class _Far_pageState extends State<Far_page> {
     return 
         Form(
           key: _formKey,
-          autovalidate: _autoValidate,
+          autovalidate: true,
           child: SingleChildScrollView(
             padding:  const EdgeInsets.all(10.0),
             child: Column(
@@ -118,6 +160,7 @@ class _Far_pageState extends State<Far_page> {
                   Color.fromRGBO(58, 58, 58,1),
                   Color.fromRGBO(58, 58, 58, .6)
                 ]),
+                textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: 'Exo2',
                   fontSize: 18, 
@@ -126,109 +169,152 @@ class _Far_pageState extends State<Far_page> {
                   SizedBox(
                     height: 15.0,
                   ),
-               DropDownField(
-                    value: ptype,
-                    icon: Icon(Icons.location_city ,color: bg_grad,),
-                    required: true,
-                    // hintText: 'Chose a Plot Type',
-                    labelText: 'Chose a Plot Type',
-                    items: plottype,
-                    strict: false,
-                    setter: (dynamic newValue) {
-                      ptype = newValue;
-                    }),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    child: DropDownFormField(
+                      
+                      required: true,
+                      titleText: 'Plot Type',
+                      hintText: 'Please choose one',
+                      value: ptype,
+                      onSaved: (value) {
+                        setState(() {
+                          ptype = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          ptype = value;
+                        });
+                      },
+                      dataSource:plottype,
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
+                  ),
                   SizedBox(
                     height: 15.0,
                   ),
-                  DropDownField(  
-                  value: btype,
-                  icon: Icon(Icons.location_city ,color: bg_grad,),
-                  required: true,
-                  // hintText: 'Building Type',
-                  labelText: 'Building Type',
-                  items: buildings,
-                  strict: false,
-                  setter: (dynamic newValue) {
-                    // FocusScope.of(context).requestFocus(_areaFocusNode);
-                    btype = newValue;
-                  }),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    child: DropDownFormField(
+                      required: true ,
+                      titleText: 'Building Type',
+                      hintText: 'Please choose a Type of Building',
+                      value: btype,
+                      onSaved: (value) {
+                        setState(() {
+                          btype = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          btype = value;
+                        });
+                      },
+                      dataSource:buildings,
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
+                  ),
                   SizedBox(
                     height: 15.0,
                   ),
-                  BoxField(
-                    defaultBorderColor: Color.fromRGBO(255, 255, 255, 0),
-                    keyboardType:TextInputType.number,
+                  TextFormField(
                     controller: _areaController,
-                    hintText: "Enter Plot Area",
-                    lableText: "Plot Area",
-                    obscureText: false,
-                    validator: (String val){
-                      if(int.parse(val) < 0  ){
-                        return 'Area needs to be greater than zero';
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                        DecimalTextInputFormatter(decimalRange: 2) ,
+                         BlacklistingTextInputFormatter(RegExp("[-,]"))
+                    ],
+                    decoration: InputDecoration(
+                        labelText:"Plot Area", 
+                        hintText: "Enter Plot Area",
+                        icon: Icon(Icons.grid_on)
+                    ) ,
+                    validator: (var val){
+                      
+                      if( val.isEmpty){
+                        return 'Area cannot be Zero';
+                      }
+                      var v =  int.parse(val);
+                      if( v > 1 ){
+                        return 'THis is greater';
                       }
                       return null ;
                     },
-                    onSaved: (String val) {
+                    onChanged: (var val ){
                       _area = int.parse(val);
                     },
-                    onFieldSubmitted: (String value) {
-                      _formKey.currentState.validate();
+                    onSaved: (var val){
+                      _area = int.parse(val);
                     },
-                    icon: Icons.grid_on,
-                    iconColor: bg_grad
                   ),
-                
-                  BoxField(
-                    defaultBorderColor: Color.fromRGBO(255, 255, 255, 0),
+                  TextFormField(
                     controller: _lengthController,
-                    hintText: "Enter Length",
-                    lableText: "Length",
-                    obscureText: false,
-                    validator: (String val){
-                      if(int.parse(val) < 0  ){
-                        return 'Area needs to be greater than zero';
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                        DecimalTextInputFormatter(decimalRange: 2),
+                         BlacklistingTextInputFormatter(RegExp("[-,]"))
+                    ],
+                    decoration: InputDecoration(
+                        labelText:"Length", 
+                        hintText: "Enter Length",
+                        icon: Icon(Icons.panorama_vertical)
+                    ) ,
+                    validator: (var val){
+                      if(val.isEmpty){
+                        return 'Length cannot be Zero';
                       }
+                      var v =  int.parse(val);
                       return null ;
                     },
-                    onSaved: (String val) {
-                      _length = val;
+                    onChanged: (var val ){
+                      _length = int.parse(val);
                     },
-                    onFieldSubmitted: (String value) {
-                      // FocusScope.of(context).requestFocus(_passFocusNode);
-                      _formKey.currentState.validate();
+                    onSaved: (var val){
+                      _length = int.parse(val);
                     },
-                    icon: Icons.panorama_vertical,
-                    iconColor: bg_grad
-                  ),
+                  ),  
                   SizedBox(
                     height: 15.0,
                   ),
-                  BoxField(
-                    defaultBorderColor: Color.fromRGBO(255, 255, 255, 0),
+                  TextFormField(
                     controller: _widthController,
-                    hintText: "Enter width",
-                    lableText: "Width",
-                    obscureText: false,
-                    validator: (String val){
-                      if(int.parse(val) < 0  ){
-                        return 'Area needs to be greater than zero';
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                        DecimalTextInputFormatter(decimalRange: 2),
+                        BlacklistingTextInputFormatter(RegExp("[-,]"))
+                    ],
+                    decoration: InputDecoration(
+                        labelText:"Width", 
+                        hintText: "Enter Width",
+                        icon: Icon(Icons.panorama_horizontal)
+                    ) ,
+                    validator: (val){
+                      if( val.isEmpty ){
+                        return 'Width cannot be Zero';
                       }
-                      return null ;
+                      if(!val.isEmpty){
+                        var v =int.parse(val);
+                        if(v > btype ){
+                          return 'Just Checking';
+                        }else{
+                          return null ;
+                        }
+                      }
                     },
-                    onSaved: (String val) {
-                      _width = val;
+                    onChanged: (val ){
+                      _width = int.parse(val);
                     },
-                    onFieldSubmitted: (String value) {
-                      // FocusScope.of(context).requestFocus(_passFocusNode);
-                       _formKey.currentState.validate();
+                    onSaved: ( val){
+                      _width = int.parse(val);
                     },
-                    icon: Icons.panorama_horizontal,
-                    iconColor: bg_grad
-                  ),
-                  SizedBox(
-                    height: 15.0,
                   ),
                   
+                  SizedBox(
+                    height: 15.0,
+                  ),
                   new SizedBox(
                     width: double.infinity,
                     height: 50.0,

@@ -30,7 +30,7 @@ dev_dependencies:
   animated_splash: ^1.0.0
   flutter_secure_storage: ^3.2.1+1
   font_awesome_flutter: ^8.0.1
-  cupertino_icons:
+  dropdown_formfield: ^0.1.1
   sliding_up_panel: ^0.3.5
   selection_menu: ^0.8.1
   decimal: ^0.3.5
