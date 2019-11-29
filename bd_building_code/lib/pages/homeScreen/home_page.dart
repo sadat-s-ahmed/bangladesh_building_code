@@ -3,7 +3,7 @@ import 'package:bd_building_code/models/home_card_details.dart';
 import 'package:bd_building_code/pages/FAR_page/far_page.dart';
 import 'package:bd_building_code/pages/guidebook_page/guidebook_page.dart';
 import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
-
+import 'package:bd_building_code/pages/about/about_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +29,8 @@ class _HomePageState extends State<HomePage>{
         "Estimation Unit Converter", 'assets/home/calculator.png', ConversionPage()),
     new HomeCardsDetails("FAR Calculator", 'assets/home/calculation.png', Far_page()),
     new HomeCardsDetails("Member", 'assets/home/science.png', HomePage()),
-    new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', HomePage()),
+    
+    new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', AboutPage()),
   ];
   
   @override
@@ -55,16 +56,20 @@ class _HomePageState extends State<HomePage>{
         child: new ListView(
           children: <Widget>[
             Container(
-              color: bg_grad2,
+              
+              color:Colors.white,
               child: new UserAccountsDrawerHeader(
                 accountName: new Text("Arefin Chisty"),
                 accountEmail: new Text("arefinChisty@gmail.com"),
-                decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                    image: new ExactAssetImage('assets/images/lake.jpeg'),
-                    fit: BoxFit.cover,
-                  ),
+                decoration: BoxDecoration(
+                  color:  appbarColor,
                 ),
+                // decoration: new BoxDecoration(
+                //   image: new DecorationImage(
+                //     image: new ExactAssetImage('assets/images/lake.jpeg'),
+                //     fit: BoxFit.cover,
+                //   ),
+                // ),
                 currentAccountPicture: CircleAvatar(
                     backgroundImage: NetworkImage(
                         "https://randomuser.me/api/portraits/men/46.jpg")),

@@ -266,7 +266,9 @@ class _LoginPageState extends State<LoginPage> {
         color: colorCurve,
         onPressed: () {
           // Going to DashBoard
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+
+          print(_formKey);
+         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
         },
       ),
     );
