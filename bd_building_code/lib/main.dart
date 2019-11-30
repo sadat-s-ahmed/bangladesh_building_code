@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
   }
  final Map<int, Widget> routes = {
     1:  HomePage(),
-    2: LoginPage()
+    2:  LoginPage()
    };
   final Function duringSplash= (){
     //do some auth logic here 

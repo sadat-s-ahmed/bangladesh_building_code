@@ -40,6 +40,7 @@ dev_dependencies:
   http:  
   flat_icons_flutter: ^1.0.2
   pdf_render:
+  fluttertoast: 2.2.11
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -4,8 +4,12 @@ import 'package:bd_building_code/pages/FAR_page/far_page.dart';
 import 'package:bd_building_code/pages/guidebook_page/guidebook_page.dart';
 import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
 import 'package:bd_building_code/pages/about/about_page.dart';
+import 'package:bd_building_code/pages/loginScreen/loginScreen.dart' as prefix0;
+import 'package:bd_building_code/pages/loginScreen/loginScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Color backgroundColor = Colors.grey.shade200;
 Color appbarColor = Colors.black;
@@ -15,24 +19,60 @@ Color grads = Color.fromRGBO(189 , 195 , 199, 1);
 Color grads2 = Color.fromRGBO(44  , 62  , 80, 1);
 Color gradinner1 = Color.fromRGBO(142 , 158 , 171, 1);
 Color gradinner2 = Color.fromRGBO(238, 242 , 243, 1);
+
+
+
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  final tokenn ; 
+  final name   ;
+  final email ;
+  const HomePage({Key key, 
+                  this.tokenn , 
+                  this.name , 
+                  this.email} ) : 
+                  super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage>{
+  String _token ;
+
   List<HomeCardsDetails> pages = [
     new HomeCardsDetails("Guide Book",'assets/home/catalogue.png' , GuidebookPage()),
     new HomeCardsDetails(
         "Estimation Unit Converter", 'assets/home/calculator.png', ConversionPage()),
     new HomeCardsDetails("FAR Calculator", 'assets/home/calculation.png', Far_page()),
-    new HomeCardsDetails("Member", 'assets/home/science.png', HomePage()),
+    // new HomeCardsDetails("Member", 'assets/home/science.png', HomePage(_token)),
     
     new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', AboutPage()),
   ];
+
+
+  @override
+  void initState() { 
+    super.initState();
+    getToken();
+  }
   
+  void getToken() async {
+    final tokens = FlutterSecureStorage();
+    String token = await tokens.read(key: "token");
+    if(token.isEmpty){
+      // return to login screen
+      Navigator.of(context).push(
+              MaterialPageRoute(
+              builder: (context) =>LoginPage() )   //Home()
+              );
+    }else{
+      setState(() {
+       _token = token;
+      });
+    }
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +99,8 @@ class _HomePageState extends State<HomePage>{
               
               color:Colors.white,
               child: new UserAccountsDrawerHeader(
-                accountName: new Text("Arefin Chisty"),
-                accountEmail: new Text("arefinChisty@gmail.com"),
+                accountName: new Text(widget.name),
+                accountEmail: new Text(widget.email),
                 decoration: BoxDecoration(
                   color:  appbarColor,
                 ),
@@ -70,9 +110,9 @@ class _HomePageState extends State<HomePage>{
                 //     fit: BoxFit.cover,
                 //   ),
                 // ),
-                currentAccountPicture: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://randomuser.me/api/portraits/men/46.jpg")),
+                // currentAccountPicture: CircleAvatar(
+                //     backgroundImage: NetworkImage(
+                //         "https://randomuser.me/api/portraits/men/46.jpg")),
               ),
             ),
             new ListTile(
@@ -103,8 +143,15 @@ class _HomePageState extends State<HomePage>{
             new ListTile(
                 leading: Icon(Icons.power_settings_new),
                 title: new Text("Logout"),
-                onTap: () {
-                  Navigator.pop(context);
+                onTap: () async{
+                  final authCodeStorage = new FlutterSecureStorage();
+                  await authCodeStorage.write(key: "token", value: '');
+                  await authCodeStorage.write(key: "name", value: '');
+                  await authCodeStorage.write(key: "email", value: '');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                    builder: (context) =>LoginPage() )   //Home()
+                    );
                 }),
           ],
         ),

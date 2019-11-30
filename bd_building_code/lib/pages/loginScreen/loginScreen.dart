@@ -1,13 +1,19 @@
 
+import 'dart:convert';
+
 import 'package:bd_building_code/component/boxfeild.dart';
 import 'package:bd_building_code/component/gradient_text.dart';
 import 'package:bd_building_code/component/responsive_screen.dart';
 import 'package:bd_building_code/pages/forgotpasswordPage.dart/forgot_password_page.dart';
 import 'package:bd_building_code/pages/homeScreen/home_page.dart';
+import 'package:bd_building_code/pages/homeScreen/home_page.dart' as prefix0;
 import 'package:bd_building_code/pages/registerpage.dart/register_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
@@ -26,13 +32,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool loading = false ;
+  LoginResponse _loginResponse ;
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passFocusNode = new FocusNode();
-  String _email, _password;
+  String _email ="test@user.com", _password="test1234";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  bool _autovalidate =  false ;
   Screen size;
 
   @override
@@ -213,7 +221,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   BoxField _emailWidget() {
-    return BoxField(
+    return 
+    BoxField(
         controller: _emailController,
         focusNode: _emailFocusNode,
         hintText: "Enter email",
@@ -226,7 +235,14 @@ class _LoginPageState extends State<LoginPage> {
           FocusScope.of(context).requestFocus(_passFocusNode);
         },
         icon: Icons.email,
-        iconColor: colorCurve
+        iconColor: colorCurve,
+        // validator: (String val){
+        //   bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val);
+        //   if(!emailValid){
+        //     return 'Enter a Valid Email!';
+        //   }
+        //   return null;
+        // },
         );
   }
 
@@ -256,7 +272,11 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: new BorderRadius.circular(30.0)
             ),
         padding: EdgeInsets.all(size.getWidthPx(12)),
-        child: Text(
+        child: loading ? 
+          CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+          ) : 
+        Text(
           "LOGIN",
           style: TextStyle(
             fontFamily: 'Exo2',
@@ -264,16 +284,79 @@ class _LoginPageState extends State<LoginPage> {
             fontSize: 20.0),
         ),
         color: colorCurve,
-        onPressed: () {
-          // Going to DashBoard
+        onPressed: () async{
+         // _validateInputs();
+          setState(() {
+           loading = true; 
+          });
+           Map data = {
+            'email': _email,
+            'password': _password
+            };
+          var body = json.encode(data);
+          print(body);
+          String url = "http://bnbuildingcode.com/api/login/";
+          http.Response response = await http.post(url,
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: body
+          );
+          final parsed = json.decode(response.body);
+          _loginResponse = LoginResponse.fromJson(parsed );
+          print(_loginResponse);
+          if(_loginResponse.status == 420){
+            Fluttertoast.showToast(
+                msg: _loginResponse.msg,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.black,
+                fontSize: 10.0);   
+          }
 
-          print(_formKey);
-         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+          if(_loginResponse.status == 201){
+            final tokens = new FlutterSecureStorage();
+            await tokens.write(key: "token", value: _loginResponse.token);
+            await tokens.write(key: "name", value: _loginResponse.name);
+            await tokens.write(key: "email", value: _loginResponse.email);
+            Fluttertoast.showToast(
+                msg: _loginResponse.msg,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.black45,
+                textColor: Colors.white,
+                fontSize: 10.0);  
+            setState(() {
+             loading = false ; 
+            });
+            Navigator.of(context).push(
+              MaterialPageRoute(
+              builder: (context) => HomePage(tokenn:_loginResponse.token ,
+              name: _loginResponse.name , email: _loginResponse.email )   //Home()
+              ));
+
+            
+          }
         },
       ),
     );
   }
 
+
+
+
+  void _validateInputs(){
+      if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+    } else {
+      setState(() {
+        _autovalidate = true;
+      });
+    }
+  }
 
 
   GestureDetector socialCircleAvatar(String assetIcon,VoidCallback onTap) {
@@ -292,6 +375,7 @@ class _LoginPageState extends State<LoginPage> {
   loginFields() =>
       Container(
         child: Form(
+            autovalidate: _autovalidate,
             key: _formKey,
             child: Column(
 
@@ -328,5 +412,26 @@ class _LoginPageState extends State<LoginPage> {
       );
 }
 
+class LoginResponse {
+  int status ;
+  String msg ;
+  String token ; 
+  String name ; 
+  String email ; 
+
+
+  LoginResponse({this.status , this.msg , this.token , this.name , this.email });
+
+  factory LoginResponse.fromJson(Map<String , dynamic> json){
+    return LoginResponse(
+      status: json['status'],
+      msg: json['msg'] ,
+      token : json['token'],
+      name:  json['name'],
+      email: json['email']
+    );
+  }
+
+}
 
 
