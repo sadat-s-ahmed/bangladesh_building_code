@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:bd_building_code/component/bottom_curve_painter.dart';
 import 'package:bd_building_code/component/boxfeild.dart';
 import 'package:bd_building_code/component/gradient_text.dart';
 import 'package:bd_building_code/component/responsive_screen.dart';
+import 'package:bd_building_code/pages/loginScreen/loginScreen.dart' as prefix0;
+import 'package:bd_building_code/pages/loginScreen/loginScreen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Color colorCurve = Color.fromRGBO(58, 58, 58, 1);
 Color backgroundColor =Colors.grey.shade200;
@@ -18,6 +25,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool loading = false ;
+  RegisterResponse _registerResponse ;
   TextEditingController _nameController =  TextEditingController();
   TextEditingController _emailController =  TextEditingController();
   TextEditingController _passwordController =  TextEditingController();
@@ -26,7 +35,10 @@ class _SignUpPageState extends State<SignUpPage> {
   FocusNode _emailFocusNode =  FocusNode();
   FocusNode _passFocusNode =  FocusNode();
   FocusNode _confirmPassFocusNode =  FocusNode();
-  String _name, _email, _password, _confirmPassword;
+  String _name ='ruzlan karim',
+   _email='rz@email.com',
+   _password='password12',
+   _confirmPassword='';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Screen size;
@@ -264,13 +276,71 @@ class _SignUpPageState extends State<SignUpPage> {
         shape: RoundedRectangleBorder(
             borderRadius:  BorderRadius.circular(30.0)),
         padding: EdgeInsets.all(size.getWidthPx(12)),
-        child: Text(
+        child: loading ? 
+          Center(
+              child: CircularProgressIndicator(
+                valueColor:new AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ) :
+        Text(
           "Sign Up",
           style: TextStyle(fontFamily: 'Exo2',color: Colors.white, fontSize: 20.0),
         ),
         color: colorCurve,
-        onPressed: () {
+        onPressed: () async{
           // Going to DashBoard
+          Map data = {
+            'name': _name,
+            'email': _email ,
+            'password': _password ,
+            'publicVisible': true
+          };
+          var body = json.encode(data);
+          print(body);
+          String url = "http://bnbuildingcode.com/api/register/";
+          http.Response response = await http.post(url,
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: body
+          );
+          print(response.body);
+          final parsed = json.decode(response.body);
+          _registerResponse = RegisterResponse.fromJson(parsed );
+          print(_registerResponse);
+          if(_registerResponse.status == 420){
+            Fluttertoast.showToast(
+                msg: _registerResponse.msg,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.black,
+                fontSize: 10.0); 
+            setState(() {
+             loading = false ; 
+            });    
+          }
+
+          if(_registerResponse.status == 201){
+            Fluttertoast.showToast(
+                msg: _registerResponse.msg,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.black45,
+                textColor: Colors.white,
+                fontSize: 10.0);  
+            setState(() {
+             loading = false ; 
+            });
+            Navigator.of(context).push(
+              MaterialPageRoute(
+              builder: (context) => LoginPage()   //Home()
+              ));
+
+            
+          }
         },
       ),
     );
@@ -302,4 +372,20 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             )),
       );
+}
+
+
+class RegisterResponse {
+  int status ;
+  String msg ;
+
+  RegisterResponse({this.status , this.msg  });
+
+  factory RegisterResponse.fromJson(Map<String , dynamic> json){
+    return RegisterResponse(
+      status: json['status'],
+      msg: json['msg'] 
+    );
+  }
+
 }

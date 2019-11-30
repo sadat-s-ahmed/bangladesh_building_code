@@ -6,7 +6,6 @@ import 'package:bd_building_code/component/gradient_text.dart';
 import 'package:bd_building_code/component/responsive_screen.dart';
 import 'package:bd_building_code/pages/forgotpasswordPage.dart/forgot_password_page.dart';
 import 'package:bd_building_code/pages/homeScreen/home_page.dart';
-import 'package:bd_building_code/pages/homeScreen/home_page.dart' as prefix0;
 import 'package:bd_building_code/pages/registerpage.dart/register_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -222,6 +221,40 @@ class _LoginPageState extends State<LoginPage> {
 
   BoxField _emailWidget() {
     return 
+    // TextFormField(
+    //     controller: _areaController,
+    //     keyboardType: TextInputType.number,
+    //     inputFormatters: <TextInputFormatter>[
+    //         DecimalTextInputFormatter(decimalRange: 2) ,
+    //           BlacklistingTextInputFormatter(RegExp("[-,]"))
+    //     ],
+    //     decoration: InputDecoration(
+    //         labelText:"Plot Area", 
+    //         hintText: "Enter Plot Area",
+    //         icon: Icon(Icons.grid_on)
+    //     ) ,
+    //     validator: (var val){
+          
+    //       if( val.isEmpty){
+    //         return 'Area cannot be Zero';
+    //       }
+    //       var v =  int.parse(val);
+    //       if( v > 1 ){
+    //         return 'THis is greater';
+    //       }
+    //       return null ;
+    //     },
+    //     onChanged: (var val ){
+    //       _area = int.parse(val);
+    //     },
+    //     onSaved: (var val){
+    //       _area = int.parse(val);
+    //     },
+    //   )
+
+
+
+
     BoxField(
         controller: _emailController,
         focusNode: _emailFocusNode,
@@ -273,9 +306,11 @@ class _LoginPageState extends State<LoginPage> {
             ),
         padding: EdgeInsets.all(size.getWidthPx(12)),
         child: loading ? 
-          CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-          ) : 
+          Center(
+              child: CircularProgressIndicator(
+                valueColor:new AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ) : 
         Text(
           "LOGIN",
           style: TextStyle(
