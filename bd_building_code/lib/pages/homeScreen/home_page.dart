@@ -6,6 +6,7 @@ import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
 import 'package:bd_building_code/pages/about/about_page.dart';
 import 'package:bd_building_code/pages/loginScreen/loginScreen.dart' as prefix0;
 import 'package:bd_building_code/pages/loginScreen/loginScreen.dart';
+import 'package:bd_building_code/pages/members/memberPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage>{
     new HomeCardsDetails(
         "Estimation Unit Converter", 'assets/home/calculator.png', ConversionPage()),
     new HomeCardsDetails("FAR Calculator", 'assets/home/calculation.png', Far_page()),
-    // new HomeCardsDetails("Member", 'assets/home/science.png', HomePage(_token)),
+    new HomeCardsDetails("Member", 'assets/home/science.png', MemberPage()),
     
     new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', AboutPage()),
   ];
