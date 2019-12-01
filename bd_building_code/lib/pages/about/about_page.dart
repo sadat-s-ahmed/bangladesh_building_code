@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
+
 
 class AboutPage extends StatefulWidget {
   AboutPage({Key key}) : super(key: key);
@@ -8,6 +11,15 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
+
+@override
+void initState() { 
+  super.initState();
+  
+}
+Future<String> loadAsset(BuildContext context) async {
+  return await DefaultAssetBundle.of(context).loadString('assets/BNBC.txt');
+}
 
 TextStyle posRes = TextStyle(color: Colors.white, backgroundColor: Colors.red),
     negRes = TextStyle(color: Colors.black, backgroundColor: Colors.white);
