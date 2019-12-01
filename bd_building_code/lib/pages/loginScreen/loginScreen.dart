@@ -53,8 +53,9 @@ class _LoginPageState extends State<LoginPage> {
     final tokens = FlutterSecureStorage();
     String token = await tokens.read(key: "token");
     String name = await tokens.read(key: "name");
-    String email = await tokens.read(key: "email");
-    if(token != null){
+    String email = await tokens.read(key: "email"); 
+    print(token);
+    if(token != ""){
       // return to login screen
       Navigator.of(context).push(
               MaterialPageRoute(

@@ -60,7 +60,8 @@ class _HomePageState extends State<HomePage>{
   void getToken() async {
     final tokens = FlutterSecureStorage();
     String token = await tokens.read(key: "token");
-    if(token == null ){
+    print(token);
+    if(token == '' ){
       // return to login screen
       Navigator.of(context).push(
               MaterialPageRoute(
@@ -151,7 +152,8 @@ class _HomePageState extends State<HomePage>{
                   await authCodeStorage.write(key: "email", value: '');
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                    builder: (context) =>LoginPage() )   //Home()
+                    builder: (context) =>LoginPage() 
+                    )   //Home()
                     );
                 }),
           ],
