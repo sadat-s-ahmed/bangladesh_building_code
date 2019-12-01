@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage>{
   void getToken() async {
     final tokens = FlutterSecureStorage();
     String token = await tokens.read(key: "token");
-    if(token.isEmpty){
+    if(token == null ){
       // return to login screen
       Navigator.of(context).push(
               MaterialPageRoute(

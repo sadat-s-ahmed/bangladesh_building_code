@@ -6,6 +6,7 @@ import 'package:bd_building_code/component/gradient_text.dart';
 import 'package:bd_building_code/component/responsive_screen.dart';
 import 'package:bd_building_code/pages/forgotpasswordPage.dart/forgot_password_page.dart';
 import 'package:bd_building_code/pages/homeScreen/home_page.dart';
+import 'package:bd_building_code/pages/homeScreen/home_page.dart' as prefix0;
 import 'package:bd_building_code/pages/registerpage.dart/register_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,30 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate =  false ;
   Screen size;
+
+  @override
+  void initState() { 
+    super.initState();
+    checkAuth();
+  }
+
+  checkAuth() async{
+    final tokens = FlutterSecureStorage();
+    String token = await tokens.read(key: "token");
+    String name = await tokens.read(key: "name");
+    String email = await tokens.read(key: "email");
+    if(token != null){
+      // return to login screen
+      Navigator.of(context).push(
+              MaterialPageRoute(
+              builder: (context) =>HomePage( tokenn: token , name: name, email: email )   
+              )
+      );
+
+    }
+    
+  }
+
 
   @override
   Widget build(BuildContext context) {

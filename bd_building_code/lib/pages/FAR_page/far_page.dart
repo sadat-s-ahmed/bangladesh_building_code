@@ -24,12 +24,21 @@ class _Far_pageState extends State<Far_page> {
   TextEditingController _areaController = new TextEditingController();
   TextEditingController _lengthController = new TextEditingController();
   TextEditingController _widthController = new TextEditingController();
-    int _length , _width;
-    int  _area ;
-    final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> formData;
+   var _length;
+   var  _width;
+  var  _area ;
   var ptype ;
   var  btype ;  
+  var _RW ;
+  var _FAR ;
+  var _MGC ;
+  var _MBA ;
+  var _MaxGC ;
+  var _floors ;
+  var final_floors ;
+  var _Existing_land_Area ; 
   List plottype = [
     {
       "display": "Square meters",
@@ -54,28 +63,32 @@ class _Far_pageState extends State<Far_page> {
       "value": 3,
     },
     {
-      "display": "Institute",
+      "display": "Primary School/ Kindergarden ",
       "value": 4,
     },
     {
-      "display": "Health Complex",
+      "display": "Institute",
       "value": 5,
     },
     {
-      "display": "Religious/Cultural Building",
+      "display": "Health Complex",
       "value": 6,
     },
     {
-      "display": "Office building",
+      "display": "Religious/Cultural Building",
       "value": 7,
     },
     {
-      "display": "Shopping Complex",
+      "display": "Office building",
       "value": 8,
     },
     {
-      "display": "Industrial Building/Warehouse",
+      "display": "Shopping Complex",
       "value": 9,
+    },
+    {
+      "display": "Industrial Building/Warehouse",
+      "value": 10,
     }
   ];
   
@@ -237,17 +250,14 @@ class _Far_pageState extends State<Far_page> {
                       if( val.isEmpty){
                         return 'Area cannot be Zero';
                       }
-                      var v =  int.parse(val);
-                      if( v > 1 ){
-                        return 'THis is greater';
-                      }
+          
                       return null ;
                     },
                     onChanged: (var val ){
-                      _area = int.parse(val);
+                      _area = val;
                     },
                     onSaved: (var val){
-                      _area = int.parse(val);
+                      _area = val;
                     },
                   ),
                   TextFormField(
@@ -266,15 +276,15 @@ class _Far_pageState extends State<Far_page> {
                       if(val.isEmpty){
                         return 'Length cannot be Zero';
                       }
-                      var v =  int.parse(val);
+              
                       
                       return null ;
                     },
                     onChanged: (var val ){
-                      _length = int.parse(val);
+                      _length = val;
                     },
                     onSaved: (var val){
-                      _length = int.parse(val);
+                      _length = val;
                     },
                   ),  
                   SizedBox(
@@ -296,20 +306,12 @@ class _Far_pageState extends State<Far_page> {
                       if( val.isEmpty ){
                         return 'Width cannot be Zero';
                       }
-                      if(!val.isEmpty){
-                        var v =int.parse(val);
-                        if(v > btype ){
-                          return 'Just Checking';
-                        }else{
-                          return null ;
-                        }
-                      }
                     },
                     onChanged: (val ){
-                      _width = int.parse(val);
+                      _width = val;
                     },
                     onSaved: ( val){
-                      _width = int.parse(val);
+                      _width = val;
                     },
                   ),
                   
@@ -339,18 +341,69 @@ class _Far_pageState extends State<Far_page> {
     
   }
   void _validateInputs() {
-    setState(() {
+    
+    
+  if (_formKey.currentState.validate()) {
+    _formKey.currentState.save();
+      generateValues();
+      setState(() {
      _hasList = true; 
     });
-  // if (_formKey.currentState.validate()) {
-  //   _formKey.currentState.save();
-  //   //  _hasList = true;
-  // } else {
-  //   setState(() {
-  //     _autoValidate = true;
-  //   });
-  // }
+    //  _hasList = true;
+  } else {
+    setState(() {
+      _autoValidate = true;
+    });
+  }
 }
+
+  generateValues(){
+    setState(() {
+      _area = double.parse(_area );
+    });
+    
+    
+    if(btype == 1 ){
+      // residential building
+      getResidentialBuilding();
+    }else if(btype == 2 ){
+      //residential hotel
+      getResidentialHotel();
+    } else if( btype == 3){
+      getSchool();
+    } else if (btype == 4 ){
+      getkindergarden();
+    } else if (btype == 5 ){
+      getInstitute();
+    } else if (btype == 6){
+      getHealth();
+    }else if (btype == 7 ){
+      getReligious();
+    }else if(btype == 8 ){
+      getOfficeBuilding();
+    }else if (btype == 9 ){
+      getShoppingComplex();
+    }else if(btype == 10 ){
+      getIbuilding();
+    }
+    print(_MBA );
+    print(_FAR);
+    print(_MGC);
+
+    setState(() {
+      _Existing_land_Area = double.parse(_length )  * double.parse(_width ) ;
+      // _MBA = _Existing_land_Area * double.parse(_FAR ); 
+      // _MaxGC = _Existing_land_Area *double.parse(_MGC )  ;
+      // _floors = double.parse(_MBA ) / double.parse(_MGC ) ;
+      // final_floors = 1 + _floors ;
+    });
+    // print(_Existing_land_Area );
+    //  print(_MBA);
+    //  print(_MaxGC);
+    //  print(_floors);
+    //  print(final_floors);
+  }
+
 
   generateList(){
     return Card(
@@ -385,79 +438,89 @@ class _Far_pageState extends State<Far_page> {
                 SizedBox(
                   height: 15.0,
                 ),
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Road Width',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text('1285 sqm' ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-                ],
-              ),
-              SizedBox(
-                  height: 15.0,
-                ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('Road Width',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+              //     Text( "$_RW",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
+              // SizedBox(
+              //     height: 15.0,
+              //   ),
 
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('FAR',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text('2.6' ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-                ],
-              ),
-              SizedBox(
-                  height: 15.0,
-                ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('FAR',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+              //     Text( "$_FAR",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
+              // SizedBox(
+              //     height: 15.0,
+              //   ),
 
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('MGC',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-                  Text('60' ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-                ],
-              ),
-              SizedBox(
-                  height: 15.0,
-                ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('MGC',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
+              //     Text( "$_MGC",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
+              // SizedBox(
+              //     height: 15.0,
+              //   ),
+              //   SizedBox(
+              //     height: 15.0,
+              //   ),
 
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Max Building Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text('1285 sqm' ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-                ],
-              ),
-              SizedBox(
-                  height: 15.0,
-                ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('Existing Land Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+              //     Text(  "$_Existing_land_Area" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('Max Building Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+              //     Text(  "$_MBA" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
+              // SizedBox(
+              //     height: 15.0,
+              //   ),
 
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Max Ground Coverage',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-                  Text('1285 sqm' ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-                ],
-              ),
-              SizedBox(
-                  height: 15.0,
-                ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('Max Ground Coverage',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
+              //     Text( "$_MaxGC",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
+              // SizedBox(
+              //     height: 15.0,
+              //   ),
 
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('No. Of Floors',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-                  Text('4' ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-                ],
-              ),
-              SizedBox(
-                  height: 15.0,
-                ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('No. Of Floors',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
+              //     Text(  "$_floors" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
+              // SizedBox(
+              //     height: 15.0,
+              //   ),
 
-                Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Final No. of Floors',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text('6' ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-                ],
-              ),
+              //   Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text('Final No. of Floors',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+              //     Text("$final_floors" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+              //   ],
+              // ),
               SizedBox(
                   height: 15.0,
                 )
@@ -465,4 +528,1013 @@ class _Far_pageState extends State<Far_page> {
             )
     ); 
   }
+
+
+getIbuilding(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2.0;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2.0;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = 6 ;
+          _FAR = 2.25;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2.25;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+         _RW = 6 ;
+          _FAR = 2.50;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+           _RW = 6 ;
+          _FAR = 2.50;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 2.75;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 2.75;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 2.75;
+          _MGC = 65.0;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 3.0;
+          _MGC = 62.5;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 3.25;
+          _MGC = 62.5;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 3.5;
+          _MGC = 60.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 3.75;
+          _MGC = 60.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 4.00;
+          _MGC = 60.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 4.25;
+          _MGC = 60.0;
+        });
+      }
+}
+
+getShoppingComplex(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2.25;
+          _MGC = 65.0;
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2.50;
+          _MGC = 62.5;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = 6 ;
+          _FAR = 2.50;
+          _MGC = 62.5;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 3.0;
+          _MGC = 60.0;
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 3.0;
+          _MGC = 60.0;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 3.25;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 3.25;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 3.25;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 3.5;
+          _MGC = 55.0;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+           _RW = 12 ;
+          _FAR = 3.75;
+          _MGC = 52.5;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 4.0;
+          _MGC = 52.5;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 4.25;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 4.50;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 4.75;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+           _RW = 12 ;
+          _FAR = 5.5;
+          _MGC = 50.0;
+        });
+      }
+}
+
+
+getOfficeBuilding(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2.5;
+          _MGC = 67.5;
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 3.0;
+          _MGC = 65;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = 6 ;
+          _FAR = 3.0;
+          _MGC = 65;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 3.5;
+          _MGC = 62.5;
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 3.5;
+          _MGC = 62.5;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+           _RW = 6 ;
+          _FAR = 3.75;
+          _MGC = 60.0;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 4.5;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 5.5;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 6.0;
+          _MGC = 55.0;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 6.5;
+          _MGC = 55.0;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 7.0;
+          _MGC = 52.5;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 7.5;
+          _MGC = 52.5;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 8.0;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 8.5;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 9.5;
+          _MGC = 50.0;
+        });
+      }
+}
+
+getReligious(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2;
+          _MGC = 65;
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2;
+          _MGC = 65;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = 6 ;
+          _FAR = 2.25;
+          _MGC = 60;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+          _RW = 6 ;
+          _FAR = 2.25;
+          _MGC = 60;
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 2.5;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+            _RW = 9 ;
+          _FAR = 2.5;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 9 ;
+          _FAR = 2.75;
+          _MGC = 55.0;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 2.75;
+          _MGC = 55.0;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+          _RW = 9 ;
+          _FAR = 3.0;
+          _MGC = 52.5;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 3.25;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 3.5;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 3.75;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 4.0;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+          _RW = 12 ;
+          _FAR = 4.25;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+           _RW = 12 ;
+          _FAR = 5.5;
+          _MGC = 50.0;
+        });
+      }
+}
+
+
+getHealth(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR ="NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.25;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+            _RW = 6.0 ;
+          _FAR = 3.25;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.25;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.50;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.50;
+          _MGC = 57.5;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.75;
+          _MGC = 55.0;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.0;
+          _MGC = 55.0;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.25;
+          _MGC = 52.5;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.50;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.75;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+            _RW = 12.0 ;
+          _FAR = 5.0;
+          _MGC = 50.0 ;
+        });
+      }
+}
+
+
+getInstitute(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR ="NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.25;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+            _RW = 6.0 ;
+          _FAR = 3.25;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.25;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.50;
+          _MGC = 57.5;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.50;
+          _MGC = 57.5;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.75;
+          _MGC = 55.0;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.0;
+          _MGC = 55.0;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.25;
+          _MGC = 52.5;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.50;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 4.75;
+          _MGC = 50.0;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+            _RW = 12.0 ;
+          _FAR = 5.0;
+          _MGC = 50.0 ;
+        });
+      }
+}
+
+getkindergarden(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR ="NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 2.00;
+          _MGC = 50.0 ;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 2.00;
+          _MGC = 50.0 ;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+          _RW = 6.0 ;
+          _FAR = 2.00;
+          _MGC = 50.0 ;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 2.25;
+          _MGC = 50.0 ;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 2.25;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 2.50;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 2.50;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+           _RW = 9.0 ;
+          _FAR = 2.75;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+           _RW = 9.0 ;
+          _FAR = 2.75;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.00;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+            _RW = 12.0 ;
+          _FAR = 3.50;
+          _MGC = 50.0 ;
+        });
+      }
+}
+
+
+getSchool(){
+  if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR ="NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP" ;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+           _RW = "NP" ;
+          _FAR = "NP";
+          _MGC = "NP";
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 2.50;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 2.50;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 2.50;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+          _RW = 6.0 ;
+          _FAR = 2.75;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 2.75;
+          _MGC = 60.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+           _RW = 9.0 ;
+          _FAR = 3.0;
+          _MGC = 57.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+          _RW = 9.0 ;
+          _FAR = 3.0;
+          _MGC = 55.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+           _RW = 9.0 ;
+          _FAR = 3.25;
+          _MGC = 53.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+           _RW = 9.0 ;
+          _FAR = 3.25;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+            _RW = 9.0 ;
+          _FAR = 3.50;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+             _RW = 12.0 ;
+          _FAR = 4.0;
+          _MGC = 50.0 ;
+        });
+      }
+}
+
+getResidentialHotel(){
+if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = 6.0 ;
+          _FAR = 2.50;
+          _MGC = 67.5 ;
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR =2.75;
+          _MGC = 65 ;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.0;
+          _MGC = 62.5 ;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.25;
+          _MGC = 62.5 ;
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.50;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.75;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 4.5;
+          _MGC = 57.5 ;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+           _RW = 9.0 ;
+          _FAR = 5.5;
+          _MGC = 57.5 ;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+           _RW = 9.0 ;
+          _FAR = 6.0;
+          _MGC = 55 ;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 6.5;
+          _MGC = 55 ;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 7.0;
+          _MGC = 52.5 ;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 7.5;
+          _MGC = 52.5 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 8.0;
+          _MGC = 50 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 8.5;
+          _MGC = 50 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+           _RW = 12;
+          _FAR = 9.5;
+          _MGC = 50 ;
+        });
+      }
+}
+
+getResidentialBuilding(){
+    if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
+        setState(() {
+          _RW = 6.0 ;
+          _FAR = 3.15;
+          _MGC = 67.5 ;
+        });
+      }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.35;
+          _MGC = 65 ;
+        });
+      }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.50;
+          _MGC = 62.5 ;
+        });
+      }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.50;
+          _MGC = 62.5 ;
+        });
+      }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.75;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >402 && _area <= 469 ) || (ptype == 2 && _area > 6 && _area <=7)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 3.75;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >469 && _area <= 536 ) || (ptype == 2 && _area > 7 && _area <=8)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 4.0;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >536 && _area <= 603 ) || (ptype == 2 && _area > 8 && _area <=9)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 4.0;
+          _MGC = 60.0 ;
+        });
+      }else if ((ptype == 1 && _area >603 && _area <= 670 ) || (ptype == 2 && _area > 9 && _area <=10)){
+        setState(() {
+           _RW = 6.0 ;
+          _FAR = 4.25;
+          _MGC = 57.5 ;
+        });
+      }
+      else if ((ptype == 1 && _area >670 && _area <= 804 ) || (ptype == 2 && _area > 10 && _area <=12)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 4.50;
+          _MGC = 57.5 ;
+        });
+      }
+      else if ((ptype == 1 && _area >804 && _area <= 938 ) || (ptype == 2 && _area > 12 && _area <=14)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 4.75;
+          _MGC = 55.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >938 && _area <= 1072 ) || (ptype == 2 && _area > 14 && _area <=16)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 5.0;
+          _MGC = 52.5 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1072 && _area <= 1206 ) || (ptype == 2 && _area > 16 && _area <=18)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 5.25;
+          _MGC = 52.5 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1206 && _area <= 1340 ) || (ptype == 2 && _area > 18 && _area <=20)){
+        setState(() {
+           _RW = 9.0;
+          _FAR = 5.25;
+          _MGC = 50.0 ;
+        });
+      }
+      else if ((ptype == 1 && _area >1340 ) || (ptype == 2 && _area > 20)){
+        setState(() {
+           _RW = 12;
+          _FAR = 5.5;
+          _MGC = 50 ;
+        });
+      }
+    }
+  
+
+
+
 }
