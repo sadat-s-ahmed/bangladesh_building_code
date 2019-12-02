@@ -26,19 +26,19 @@ class _Far_pageState extends State<Far_page> {
   TextEditingController _widthController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> formData;
-   var _length;
-   var  _width;
-  var  _area ;
-  var ptype ;
-  var  btype ;  
-  var _RW ;
-  var _FAR ;
-  var _MGC ;
-  var _MBA ;
-  var _MaxGC ;
-  var _floors ;
-  var final_floors ;
-  var _Existing_land_Area ; 
+   double _length;
+   double  _width;
+  double  _area ;
+  int ptype ;
+  int  btype ;  
+  double _RW ;
+  double _FAR ;
+  double _MGC ;
+  double _MBA ;
+  double _MaxGC ;
+  double _floors ;
+  double final_floors ;
+  double _Existing_land_Area ; 
   List plottype = [
     {
       "display": "Square meters",
@@ -185,7 +185,12 @@ class _Far_pageState extends State<Far_page> {
                   Container(
                     padding: EdgeInsets.all(16),
                     child: DropDownFormField(
-                      
+                      validator: (val){
+                       if( val == null ){
+                        return 'Please Select an Option';
+                      }
+                      return null;
+                      },
                       required: true,
                       titleText: 'Plot Type',
                       hintText: 'Please choose one',
@@ -211,6 +216,12 @@ class _Far_pageState extends State<Far_page> {
                   Container(
                     padding: EdgeInsets.all(16),
                     child: DropDownFormField(
+                      validator: (val){
+                       if( val == null ){
+                        return 'Please Select an Option';
+                      }
+                      return null;
+                      },
                       required: true ,
                       titleText: 'Building Type',
                       hintText: 'Please choose a Type of Building',
@@ -254,10 +265,10 @@ class _Far_pageState extends State<Far_page> {
                       return null ;
                     },
                     onChanged: (var val ){
-                      _area = val;
+                      _area = double.parse(val ) ;
                     },
                     onSaved: (var val){
-                      _area = val;
+                      _area = double.parse(val ) ;
                     },
                   ),
                   TextFormField(
@@ -281,10 +292,10 @@ class _Far_pageState extends State<Far_page> {
                       return null ;
                     },
                     onChanged: (var val ){
-                      _length = val;
+                      _length = double.parse(val ) ;
                     },
                     onSaved: (var val){
-                      _length = val;
+                      _length =double.parse(val ) ;
                     },
                   ),  
                   SizedBox(
@@ -308,10 +319,10 @@ class _Far_pageState extends State<Far_page> {
                       }
                     },
                     onChanged: (val ){
-                      _width = val;
+                      _width = double.parse(val ) ;
                     },
                     onSaved: ( val){
-                      _width = val;
+                      _width = double.parse(val ) ;
                     },
                   ),
                   
@@ -358,9 +369,7 @@ class _Far_pageState extends State<Far_page> {
 }
 
   generateValues(){
-    setState(() {
-      _area = double.parse(_area );
-    });
+  
     
     
     if(btype == 1 ){
@@ -386,22 +395,19 @@ class _Far_pageState extends State<Far_page> {
     }else if(btype == 10 ){
       getIbuilding();
     }
-    print(_MBA );
-    print(_FAR);
-    print(_MGC);
 
     setState(() {
-      _Existing_land_Area = double.parse(_length )  * double.parse(_width ) ;
-      // _MBA = _Existing_land_Area * double.parse(_FAR ); 
-      // _MaxGC = _Existing_land_Area *double.parse(_MGC )  ;
-      // _floors = double.parse(_MBA ) / double.parse(_MGC ) ;
-      // final_floors = 1 + _floors ;
+      _Existing_land_Area = _length   * _width ;
+      _MBA = _Existing_land_Area *_FAR ; 
+      _MaxGC = _Existing_land_Area *_MGC  ;
+      _floors = _MBA / _MGC  ;
+      final_floors = 1 + _floors ;
     });
-    // print(_Existing_land_Area );
-    //  print(_MBA);
-    //  print(_MaxGC);
-    //  print(_floors);
-    //  print(final_floors);
+    print(_Existing_land_Area );
+     print(_MBA);
+     print(_MaxGC);
+     print(_floors);
+     print(final_floors);
   }
 
 
@@ -438,89 +444,89 @@ class _Far_pageState extends State<Far_page> {
                 SizedBox(
                   height: 15.0,
                 ),
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('Road Width',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-              //     Text( "$_RW",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
-              // SizedBox(
-              //     height: 15.0,
-              //   ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Road Width',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+                  Text( _RW.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
+              SizedBox(
+                  height: 15.0,
+                ),
 
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('FAR',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-              //     Text( "$_FAR",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
-              // SizedBox(
-              //     height: 15.0,
-              //   ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('FAR',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+                  Text( _FAR.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
+              SizedBox(
+                  height: 15.0,
+                ),
 
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('MGC',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-              //     Text( "$_MGC",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
-              // SizedBox(
-              //     height: 15.0,
-              //   ),
-              //   SizedBox(
-              //     height: 15.0,
-              //   ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('MGC',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
+                  Text( _MGC.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
+              SizedBox(
+                  height: 15.0,
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
 
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('Existing Land Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-              //     Text(  "$_Existing_land_Area" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('Max Building Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-              //     Text(  "$_MBA" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
-              // SizedBox(
-              //     height: 15.0,
-              //   ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Existing Land Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+                  Text(  _Existing_land_Area.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Max Building Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+                  Text(  _MBA.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
+              SizedBox(
+                  height: 15.0,
+                ),
 
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('Max Ground Coverage',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-              //     Text( "$_MaxGC",style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
-              // SizedBox(
-              //     height: 15.0,
-              //   ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Max Ground Coverage',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
+                  Text( _MaxGC.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
+              SizedBox(
+                  height: 15.0,
+                ),
 
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('No. Of Floors',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-              //     Text(  "$_floors" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
-              // SizedBox(
-              //     height: 15.0,
-              //   ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('No. Of Floors',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
+                  Text(  _floors.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
+              SizedBox(
+                  height: 15.0,
+                ),
 
-              //   Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     Text('Final No. of Floors',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-              //     Text("$final_floors" ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
-              //   ],
-              // ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Final No. of Floors',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
+                  Text(final_floors.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                ],
+              ),
               SizedBox(
                   height: 15.0,
                 )
@@ -935,27 +941,27 @@ getReligious(){
 getHealth(){
   if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
         setState(() {
-          _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+          _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
         setState(() {
-           _RW = "NP" ;
-          _FAR ="NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR =0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
         setState(() {
@@ -1036,27 +1042,27 @@ getHealth(){
 getInstitute(){
   if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
         setState(() {
-          _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+          _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
         setState(() {
-           _RW = "NP" ;
-          _FAR ="NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR =0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
         setState(() {
@@ -1136,27 +1142,27 @@ getInstitute(){
 getkindergarden(){
   if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
         setState(() {
-          _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+          _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
         setState(() {
-           _RW = "NP" ;
-          _FAR ="NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR =0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
         setState(() {
@@ -1237,27 +1243,27 @@ getkindergarden(){
 getSchool(){
   if((ptype == 1 && _area <=134) || (ptype == 2 && _area <=2) ){
         setState(() {
-          _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+          _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >134 && _area <= 201 ) || (ptype == 2 && _area > 2 && _area <=3)){
         setState(() {
-           _RW = "NP" ;
-          _FAR ="NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR =0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >201 && _area <= 265 ) || (ptype == 2 && _area > 3 && _area <=4)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP" ;
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0 ;
         });
       }else if ((ptype == 1 && _area >265 && _area <= 335 ) || (ptype == 2 && _area > 4 && _area <=5)){
         setState(() {
-           _RW = "NP" ;
-          _FAR = "NP";
-          _MGC = "NP";
+           _RW = 0 ;
+          _FAR = 0;
+          _MGC = 0;
         });
       }else if ((ptype == 1 && _area >335 && _area <= 402 ) || (ptype == 2 && _area > 5 && _area <=6)){
         setState(() {
