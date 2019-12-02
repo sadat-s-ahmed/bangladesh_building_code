@@ -61,7 +61,7 @@ class _ConversionPageState extends State<ConversionPage> {
                 minHeight: _panelHeightClosed,
                 collapsed: _buttons(),
                 body: _body(),
-                panel:History(operations: calculations),
+                panel:History(operations: calculations , setHistory: _setHistory ),
                 onPanelSlide: (double pos) => setState((){
                   _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
                 }),
@@ -73,6 +73,11 @@ class _ConversionPageState extends State<ConversionPage> {
       )
     );
   }
+
+_setHistory(){
+
+}
+
   Widget _buttons(){
     return Container(
       padding: EdgeInsets.only(

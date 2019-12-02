@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'calculator.dart';
 
 class History extends StatelessWidget {
-  History({@required this.operations});
-
+  
+  History({@required this.operations , this.getHistory});
+  final Function getHistory ;
   final List<String> operations;
 
   @override
@@ -30,7 +31,7 @@ class History extends StatelessWidget {
           title: Text(operations[i]),
           onTap: () {
             print(operations[i]);
-            Navigator.pop(context, operations[i]);
+            getHistory(operations[i]);
           },
           leading: Container(
             decoration: BoxDecoration(
