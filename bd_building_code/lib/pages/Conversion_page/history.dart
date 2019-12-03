@@ -31,7 +31,7 @@ class History extends StatelessWidget {
           title: Text(operations[i]),
           onTap: () {
             print(operations[i]);
-            getHistory(operations[i]);
+            getHistory(Calculator.parseString(operations[i]));
           },
           leading: Container(
             decoration: BoxDecoration(

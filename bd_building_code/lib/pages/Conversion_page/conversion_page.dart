@@ -27,7 +27,7 @@ class _ConversionPageState extends State<ConversionPage> {
   final double _initFabHeight = 120.0;
   double _fabHeight;
   double _panelHeightOpen = 575.0;
-  double _panelHeightClosed = 100.0;
+  double _panelHeightClosed = 120.0;
 
   void initState(){
     super.initState();
@@ -84,32 +84,51 @@ _setHistory(var x){
   Widget _buttons(){
     return Container(
       padding: EdgeInsets.only(
-        top: 50 , bottom: 5 , left: 20,right: 20  
-       ),
+        top: 15 ,
+        bottom: 0,
+        left: 10,
+        right: 10 
+
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-            GestureDetector(
-            onTap: (){
-              setState(() {
-              conversionType= !this.conversionType; 
-              });
-              if(conversionType){
-              _onPressed(buttonText: '*');
-              _onPressed(buttonText: '1');
-              _onPressed(buttonText: '2');
-              _onPressed(buttonText: '=');
-              }else{
-                _onPressed(buttonText: '/');
-              _onPressed(buttonText: '1');
-              _onPressed(buttonText: '2');
-              _onPressed(buttonText: '=');
-              }
-              
-            },
-            child: Text(this.conversionType ? 'inch' : 'ft'),
-          ) ,
+          
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start, 
+            
+            children: <Widget>[
+              RaisedButton(
+                onPressed: (){
+                  if(calculatorString.length > 0 ){
+                    if(conversionType){
+                  _onPressed(buttonText: '*');
+                  _onPressed(buttonText: '1');
+                  _onPressed(buttonText: '2');
+                  _onPressed(buttonText: '=');
+                  }else{
+                    _onPressed(buttonText: '/');
+                  _onPressed(buttonText: '1');
+                  _onPressed(buttonText: '2');
+                  _onPressed(buttonText: '=');
+                  }
+                  setState(() {
+                  conversionType= !this.conversionType; 
+                  });
+                  }
+                },
+                child: Text(this.conversionType ? 'inch' : 'ft'),
+              ) 
+            ],
+          ),
+            IconButton(
+            iconSize: 15.0,
+            icon: Icon(Icons.filter_list),
+            onPressed: (){},
+          ),
+          
           // Positioned(
           //       top: 30.0,
           //       left: 20,

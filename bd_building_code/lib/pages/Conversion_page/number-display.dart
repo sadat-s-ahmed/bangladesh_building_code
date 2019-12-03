@@ -11,6 +11,7 @@ class NumberDisplay extends StatelessWidget {
         child: Row(
           mainAxisAlignment : MainAxisAlignment.end ,
           crossAxisAlignment: CrossAxisAlignment.end,
+          textDirection: TextDirection.rtl,
           children: <Widget>[
             Text(
               value,
