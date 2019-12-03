@@ -6,16 +6,18 @@ class NumberDisplay extends StatelessWidget {
   final String value;    
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Padding( 
         padding: EdgeInsets.all(20),
         child: Row(
+          mainAxisAlignment : MainAxisAlignment.end ,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Text(
               value,
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.end,
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold ),
             ),
           ],
-          mainAxisAlignment: MainAxisAlignment.end,
         )
     );
   }

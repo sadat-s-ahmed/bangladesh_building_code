@@ -61,7 +61,7 @@ class _ConversionPageState extends State<ConversionPage> {
                 minHeight: _panelHeightClosed,
                 collapsed: _buttons(),
                 body: _body(),
-                panel:History(operations: calculations , setHistory: _setHistory ),
+                panel:History(operations: calculations , getHistory: _setHistory ),
                 onPanelSlide: (double pos) => setState((){
                   _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
                 }),
@@ -74,8 +74,11 @@ class _ConversionPageState extends State<ConversionPage> {
     );
   }
 
-_setHistory(){
-
+_setHistory(var x){
+  print(x);
+  setState(() {
+    calculatorString = x ;
+  });
 }
 
   Widget _buttons(){
@@ -130,8 +133,14 @@ _setHistory(){
                 
                 Spacer(),
                 // conversionButton(),
-
-                NumberDisplay(value: calculatorString , type: conversionType),
+                 Flexible(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    
+                    child: NumberDisplay(value: calculatorString , type: conversionType),
+                  ),
+                ),
+                
                 CalculatorButtons(onTap: _onPressed),
                 
               ],
