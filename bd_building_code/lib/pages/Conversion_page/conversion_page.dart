@@ -100,6 +100,35 @@ _setHistory(var x){
             crossAxisAlignment: CrossAxisAlignment.start, 
             
             children: <Widget>[
+              // Container(
+              //       padding: EdgeInsets.all(16),
+              //       child: DropDownFormField(
+              //         validator: (val){
+              //          if( val == null ){
+              //           return 'Please Select an Option';
+              //         }
+              //         return null;
+              //         },
+              //         required: true,
+              //         titleText: 'Plot Type',
+              //         hintText: 'Please choose one',
+              //         value: ptype,
+              //         onSaved: (value) {
+              //           setState(() {
+              //             ptype = value;
+              //           });
+              //         },
+              //         onChanged: (value) {
+              //           setState(() {
+              //             ptype = value;
+              //           });
+              //         },
+              //         dataSource:plottype,
+              //         textField: 'display',
+              //         valueField: 'value',
+              //       ),
+              //     )
+
               RaisedButton(
                 onPressed: (){
                   if(calculatorString.length > 0 ){

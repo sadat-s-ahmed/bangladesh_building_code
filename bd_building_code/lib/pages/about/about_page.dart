@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 
-
 Color backgroundColor = Colors.grey.shade200;
 Color appbarColor = Colors.black;
 Color bg_grad = Color.fromRGBO(58, 58,58,1);
@@ -32,9 +31,10 @@ void initState() {
 }
 getBearings() async{
   loadAsset(context).then((s){
-    print(s.split('Chapter').length);
-    list = s.split('Chapter');
-    text = list[0] ; 
+    print(s.split("CHAPTER").length);
+
+    list = s.split('###SECTION');
+    text = s.split('###SECTION')[0] ; 
   });
 }
 
@@ -126,12 +126,17 @@ TextSpan searchMatch(String match) {
                   backgroundColor:appbarColor ,
                   elevation: 0.0,
                   centerTitle: true,
-                  title: TextField(
-                    style: TextStyle(fontSize: 22),
-                    decoration: InputDecoration(hintText: "Search"),
-                    onChanged: (t) {
-                      setState(() => search = t);
-                    },
+                  title: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    color: Colors.white,
+                    child: TextField(
+                      showCursor: true,
+                      style: TextStyle(fontSize: 22 ,color:  Colors.black ),
+                      decoration: InputDecoration(hintText: "Search"),
+                      onChanged: (t) {
+                        setState(() => search = t);
+                      },
+                    ),
                   ),
                 ),
             ), 
@@ -142,7 +147,7 @@ TextSpan searchMatch(String match) {
                   if(snapshot.hasData){
                     
                     return new ListView.builder(
-                      itemCount: snapshot.data.split('Chapter').length,
+                      itemCount: snapshot.data.split('###SECTION').length,
                       itemBuilder: (context , index ){
                         return ListTile(
                             title: new Text("Chapter $index"),

@@ -1,8 +1,9 @@
-﻿## BNBC 2015 FINAL DRAFTBANGLADESH NATIONAL
+## BNBC 2015 FINAL DRAFTBANGLADESH NATIONAL
 
 ## BUILDING CODE
 
 Volume 1 of 3
+
 (Part 1 to Part 5)
 
 FINAL DRAFT
@@ -1018,7 +1019,7 @@ This page is intentionally left blank.
 
 1 - ii Vol. 1
 
-#CHAPTER 1
+Chapter 1
 
 TITLE, SCOPE AND GENERAL
 
@@ -1132,7 +1133,7 @@ sanitation than the existing building.
 
 1 - 2 Vol. 1
 
-#CHAPTER 2
+Chapter 2
 
 DEFINITIONS
 
@@ -1373,7 +1374,7 @@ BNBC 2015 FINAL DRAFT
 
 1 - 6 Vol. 1
 
-#CHAPTER 3
+Chapter 3
 
 ABBREVIATIONS
 
@@ -1687,7 +1688,7 @@ Appendix F Form for Occupancy Certificate
 
 2 - ii
 
-#CHAPTER 1
+Chapter 1
 
 PURPOSE AND APPLICABILITY
 
@@ -2222,7 +2223,7 @@ This page is intentionally left blank.
 
 2 - 10 Vol. 1
 
-#CHAPTER 3
+Chapter 3
 
 PERMITS AND INSPECTIONS
 

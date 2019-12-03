@@ -41,6 +41,7 @@ dev_dependencies:
   flat_icons_flutter: ^1.0.2
   pdf_render:
   fluttertoast: 2.2.11
+  native_pdf_view: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,8 +77,11 @@ flutter:
    - assets/home/contract-1.png
    - assets/BNBC.pdf
    - assets/daag.pdf
+   - assets/daag.txt
    - assets/imarat_nirman.pdf
+   - assets/imarat_nirman.txt
    - assets/BNBC.txt
+   - assets/BNBC.md
    
 
    
