@@ -6,7 +6,6 @@ import 'package:bd_building_code/component/gradient_text.dart';
 import 'package:bd_building_code/component/responsive_screen.dart';
 import 'package:bd_building_code/pages/forgotpasswordPage.dart/forgot_password_page.dart';
 import 'package:bd_building_code/pages/homeScreen/home_page.dart';
-import 'package:bd_building_code/pages/homeScreen/home_page.dart' as prefix0;
 import 'package:bd_building_code/pages/registerpage.dart/register_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = new TextEditingController();
   FocusNode _emailFocusNode = new FocusNode();
   FocusNode _passFocusNode = new FocusNode();
-  String _email ="test@user.com", _password="test1234";
+  String _email , _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate =  false ;
   Screen size;
@@ -245,78 +244,95 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(fontFamily: 'Exo2',fontSize: 36, fontWeight: FontWeight.bold));
   }
 
-  BoxField _emailWidget() {
-    return 
-    // TextFormField(
-    //     controller: _areaController,
-    //     keyboardType: TextInputType.number,
-    //     inputFormatters: <TextInputFormatter>[
-    //         DecimalTextInputFormatter(decimalRange: 2) ,
-    //           BlacklistingTextInputFormatter(RegExp("[-,]"))
-    //     ],
-    //     decoration: InputDecoration(
-    //         labelText:"Plot Area", 
-    //         hintText: "Enter Plot Area",
-    //         icon: Icon(Icons.grid_on)
-    //     ) ,
-    //     validator: (var val){
-          
-    //       if( val.isEmpty){
-    //         return 'Area cannot be Zero';
-    //       }
-    //       var v =  int.parse(val);
-    //       if( v > 1 ){
-    //         return 'THis is greater';
-    //       }
-    //       return null ;
-    //     },
-    //     onChanged: (var val ){
-    //       _area = int.parse(val);
-    //     },
-    //     onSaved: (var val){
-    //       _area = int.parse(val);
-    //     },
-    //   )
-
-
-
-
-    BoxField(
+   _emailWidget() {
+    return Container(
+      margin: EdgeInsets.only(top: 0),
+      padding: EdgeInsets.all(5),
+      alignment: Alignment.center,
+      decoration:  BoxDecoration(
+        color: Colors.grey.shade100,
+        border:  Border.all(color:Colors.grey.shade400, width: 1.0),
+        borderRadius:  BorderRadius.circular(8.0)),
+      child: TextFormField(
         controller: _emailController,
-        focusNode: _emailFocusNode,
-        hintText: "Enter email",
-        lableText: "Email",
-        obscureText: false,
-        onSaved: (String val) {
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black38),
+          prefixIcon: Icon(
+            Icons.email,
+            color: Colors.black38,
+            size: 22,
+          ),
+          border: InputBorder.none,
+            labelText:"Email Address", 
+            fillColor: Colors.white
+        ) ,
+        validator: (var val){
+          
+          if( val.isEmpty){
+            return 'Email cannot be Empty';
+          }
+          if(!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(val)){
+            return 'Enter a Valid email address' ;
+          }
+          return null ;
+          
+        },
+        onChanged: (var val ){
           _email = val;
         },
-        onFieldSubmitted: (String value) {
-          FocusScope.of(context).requestFocus(_passFocusNode);
+        onSaved: (var val){
+          _email = val ;
         },
-        icon: Icons.email,
-        iconColor: colorCurve,
-        // validator: (String val){
-        //   bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val);
-        //   if(!emailValid){
-        //     return 'Enter a Valid Email!';
-        //   }
-        //   return null;
-        // },
-        );
+      ),
+    ) ;
+    
   }
 
-  BoxField _passwordWidget() {
-    return BoxField(
+   _passwordWidget() {
+    return Container(
+      margin: EdgeInsets.only(top: 0 ),
+      padding: EdgeInsets.all(5),
+      alignment: Alignment.center,
+      decoration:  BoxDecoration(
+        color: Colors.grey.shade100,
+        border:  Border.all(color:Colors.grey.shade400, width: 1.0),
+        borderRadius:  BorderRadius.circular(8.0)),
+      child: TextFormField(
         controller: _passwordController,
-        focusNode: _passFocusNode,
-        hintText: "Enter Password",
-        lableText: "Password",
+        keyboardType: TextInputType.text,
         obscureText: true,
-        icon: Icons.lock_outline,
-        onSaved: (String val) {
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black38),
+          prefixIcon: Icon(
+            Icons.lock_outline,
+            color: Colors.black38,
+            size: 22,
+          ),
+          border: InputBorder.none,
+            labelText:"Enter Password", 
+            fillColor: Colors.white
+        ) ,
+        validator: (var val){
+          
+          if( val.isEmpty){
+            return 'Password cannot be empty';
+          }
+          if(val.length < 8 ){
+            return 'Password needs to be minimum 8 characters ';
+          }
+
+          return null ;
+          
+        },
+        onChanged: (var val ){
           _password = val;
         },
-        iconColor: colorCurve);
+        onSaved: (var val){
+          _password = val ;
+        },
+      ),
+    ) ;
   }
 
   Container _loginButtonWidget() {
@@ -346,11 +362,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
         color: colorCurve,
         onPressed: () async{
-         // _validateInputs();
           setState(() {
            loading = true; 
           });
-           Map data = {
+          if (_formKey.currentState.validate()) {
+           _formKey.currentState.save();
+            Map data = {
             'email': _email,
             'password': _password
             };
@@ -399,25 +416,22 @@ class _LoginPageState extends State<LoginPage> {
               name: _loginResponse.name , email: _loginResponse.email )   //Home()
               ));
 
-            
           }
-        },
+           
+          }else{
+          setState(() {
+            loading = false ;
+            _autovalidate = true;
+          });
+          }
+          
+           
+          }
+       
       ),
     );
   }
 
-
-
-
-  void _validateInputs(){
-      if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-    } else {
-      setState(() {
-        _autovalidate = true;
-      });
-    }
-  }
 
 
   GestureDetector socialCircleAvatar(String assetIcon,VoidCallback onTap) {

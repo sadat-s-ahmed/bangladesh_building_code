@@ -70,15 +70,15 @@ class _MemberPageState extends State<MemberPage> {
     final memberResponse = MemberResponse.fromJson(parsed);
     print(memberResponse.msg);
     if(memberResponse.status == 420){
-       Fluttertoast.showToast(
-                msg: memberResponse.msg,
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.redAccent,
-                textColor: Colors.white38,
-                fontSize: 10.0); 
-    return list ;  
+      //  Fluttertoast.showToast(
+      //           msg: memberResponse.msg,
+      //           toastLength: Toast.LENGTH_LONG,
+      //           gravity: ToastGravity.BOTTOM,
+      //           timeInSecForIos: 1,
+      //           backgroundColor: Colors.redAccent,
+      //           textColor: Colors.white38,
+      //           fontSize: 10.0);  
+      print('errrorrs in memebers ');
           }
     
 

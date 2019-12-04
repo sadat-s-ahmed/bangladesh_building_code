@@ -26,19 +26,17 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool loading = false ;
+  bool _autovalidate = false ;
   RegisterResponse _registerResponse ;
   TextEditingController _nameController =  TextEditingController();
   TextEditingController _emailController =  TextEditingController();
   TextEditingController _passwordController =  TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
-  FocusNode _nameFocusNode =  FocusNode();
-  FocusNode _emailFocusNode =  FocusNode();
-  FocusNode _passFocusNode =  FocusNode();
-  FocusNode _confirmPassFocusNode =  FocusNode();
-  String _name ='ruzlan karim',
-   _email='rz@email.com',
-   _password='password12',
-   _confirmPassword='';
+  String _name ,
+   _email,
+   _password,
+   _confirmPassword;
+   bool isSwitched = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Screen size;
@@ -50,8 +48,8 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
         backgroundColor:backgroundColor ,
         resizeToAvoidBottomInset: true,
-        body:Stack(
-            fit: StackFit.expand,
+        body:ListView(
+           
             children: <Widget>[
               Container(
               decoration: BoxDecoration(
@@ -147,31 +145,33 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ],
       ),
-      child: new Column(
-        children: <Widget>[
-            SingleChildScrollView(
-              child: SafeArea(
-                top: true,
-                bottom: false,
-                child: Container(
-                  // margin: EdgeInsets.symmetric(
-                  //     horizontal: size.getWidthPx(20), vertical: size.getWidthPx(20)),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        
-                        _signUpGradientText(),
+      child: SingleChildScrollView(
+              child: new Column(
+          children: <Widget>[
+              SingleChildScrollView(
+                child: SafeArea(
+                  top: true,
+                  bottom: false,
+                  child: Container(
+                    // margin: EdgeInsets.symmetric(
+                    //     horizontal: size.getWidthPx(20), vertical: size.getWidthPx(20)),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
                           
-                        
-                        SizedBox(height: size.getWidthPx(10)),
-                        _textAccount(),
-                        SizedBox(height: size.getWidthPx(30)),
-                        registerFields()
-                      ]),
+                          _signUpGradientText(),
+                            
+                          
+                          SizedBox(height: size.getWidthPx(10)),
+                          _textAccount(),
+                          SizedBox(height: size.getWidthPx(30)),
+                          registerFields()
+                        ]),
+                  ),
                 ),
-              ),
-            )
-        ],
+              )
+          ],
+        ),
       ),
     );
   
@@ -204,67 +204,220 @@ class _SignUpPageState extends State<SignUpPage> {
         style: TextStyle(fontFamily: 'Exo2',fontSize: 36, fontWeight: FontWeight.bold));
   }
 
-  BoxField _nameWidget() {
-    return BoxField(
+   _nameWidget() {
+        return Container(
+      margin: EdgeInsets.only(top: 0),
+      padding: EdgeInsets.all(5),
+      alignment: Alignment.center,
+      decoration:  BoxDecoration(
+        color: Colors.grey.shade100,
+        border:  Border.all(color:Colors.grey.shade400, width: 1.0),
+        borderRadius:  BorderRadius.circular(8.0)),
+      child: TextFormField(
         controller: _nameController,
-        focusNode: _nameFocusNode,
-        hintText: "Enter Name",
-        lableText: "Name",
-        obscureText: false,
-        onSaved: (String val) {
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black38),
+          prefixIcon: Icon(
+            Icons.email,
+            color: Colors.black38,
+            size: 22,
+          ),
+          border: InputBorder.none,
+            labelText:"Name ", 
+            fillColor: Colors.white
+        ) ,
+        validator: (var val){
+          
+          if( val.isEmpty){
+            return 'Email cannot be Empty';
+          }
+          if(val.length < 5){
+            return 'Name must have minimum 6 characters';
+          }
+          return null ;
+          
+        },
+        onChanged: (var val ){
           _name = val;
         },
-        onFieldSubmitted: (String value) {
-          FocusScope.of(context).requestFocus(_emailFocusNode);
+        onSaved: (var val){
+          _name = val ;
         },
-        icon: Icons.person,
-        iconColor: colorCurve);
+      ),
+    ) ;
   }
-
-  BoxField _emailWidget() {
-    return BoxField(
+  
+   _emailWidget() {
+    return Container(
+      margin: EdgeInsets.only(top: 0),
+      padding: EdgeInsets.all(5),
+      alignment: Alignment.center,
+      decoration:  BoxDecoration(
+        color: Colors.grey.shade100,
+        border:  Border.all(color:Colors.grey.shade400, width: 1.0),
+        borderRadius:  BorderRadius.circular(8.0)),
+      child: TextFormField(
         controller: _emailController,
-        focusNode: _emailFocusNode,
-        hintText: "Enter email",
-        lableText: "Email",
-        obscureText: false,
-        onSaved: (String val) {
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black38),
+          prefixIcon: Icon(
+            Icons.email,
+            color: Colors.black38,
+            size: 22,
+          ),
+          border: InputBorder.none,
+            labelText:"Email Address", 
+            fillColor: Colors.white
+        ) ,
+        validator: (var val){
+          
+          if( val.isEmpty){
+            return 'Email cannot be Empty';
+          }
+          if(!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(val)){
+            return 'Enter a Valid email address' ;
+          }
+          return null ;
+          
+        },
+        onChanged: (var val ){
           _email = val;
         },
-        onFieldSubmitted: (String value) {
-          FocusScope.of(context).requestFocus(_passFocusNode);
+        onSaved: (var val){
+          _email = val ;
         },
-        icon: Icons.email,
-        iconColor: colorCurve);
+      ),
+    ) ;
+    
   }
 
-  BoxField _passwordWidget() {
-    return BoxField(
+   _passwordWidget() {
+    return Container(
+      margin: EdgeInsets.only(top: 0 ),
+      padding: EdgeInsets.all(5),
+      alignment: Alignment.center,
+      decoration:  BoxDecoration(
+        color: Colors.grey.shade100,
+        border:  Border.all(color:Colors.grey.shade400, width: 1.0),
+        borderRadius:  BorderRadius.circular(8.0)),
+      child: TextFormField(
         controller: _passwordController,
-        focusNode: _passFocusNode,
-        hintText: "Enter Password",
-        lableText: "Password",
+        keyboardType: TextInputType.text,
         obscureText: true,
-        icon: Icons.lock_outline,
-        onSaved: (String val) {
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black38),
+          prefixIcon: Icon(
+            Icons.lock_outline,
+            color: Colors.black38,
+            size: 22,
+          ),
+          border: InputBorder.none,
+            labelText:"Enter Password", 
+            fillColor: Colors.white
+        ) ,
+        validator: (var val){
+          
+          if( val.isEmpty){
+            return 'Password cannot be empty';
+          }
+          if(val.length < 8 ){
+            return 'Password needs to be minimum 8 characters ';
+          }
+
+          return null ;
+          
+        },
+        onChanged: (var val ){
           _password = val;
         },
-        iconColor: colorCurve);
+        onSaved: (var val){
+          _password = val ;
+        },
+      ),
+    ) ;
   }
 
-  BoxField _confirmPasswordWidget() {
-    return BoxField(
+   _confirmPasswordWidget() {
+    return Container(
+      margin: EdgeInsets.only(top: 0 ),
+      padding: EdgeInsets.all(5),
+      alignment: Alignment.center,
+      decoration:  BoxDecoration(
+        color: Colors.grey.shade100,
+        border:  Border.all(color:Colors.grey.shade400, width: 1.0),
+        borderRadius:  BorderRadius.circular(8.0)),
+      child: TextFormField(
         controller: _confirmPasswordController,
-        focusNode: _confirmPassFocusNode,
-        hintText: "Enter Confirm Password",
-        lableText: "Confirm Password",
+        keyboardType: TextInputType.text,
         obscureText: true,
-        icon: Icons.lock_outline,
-        onSaved: (String val) {
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black38),
+          prefixIcon: Icon(
+            Icons.lock_outline,
+            color: Colors.black38,
+            size: 22,
+          ),
+          border: InputBorder.none,
+            labelText:"Confirm Password", 
+            fillColor: Colors.white
+        ) ,
+        validator: (var val){
+          
+          if( val.isEmpty){
+            return 'Password cannot be empty';
+          }
+          if(val.length < 8 ){
+            return 'Password needs to be minimum 8 characters ';
+          }
+          if(val != _password){
+            return 'Password must match';
+          }
+
+          return null ;
+          
+        },
+        onChanged: (var val ){
           _confirmPassword = val;
         },
-        iconColor: colorCurve);
+        onSaved: (var val){
+          _confirmPassword = val ;
+        },
+      ),
+    ) ;
   }
+  _visibilitySwitch(){
+    return Container(
+    margin: EdgeInsets.only(top: 0 ),
+    padding: EdgeInsets.all(5),
+    alignment: Alignment.center,
+    decoration:  BoxDecoration(
+      color: Colors.grey.shade100,
+      border:  Border.all(color:Colors.grey.shade400, width: 1.0),
+      borderRadius:  BorderRadius.circular(8.0)
+      ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text('Public'),
+        Switch(
+        value: isSwitched,
+        onChanged: (value) {
+          setState(() {
+            isSwitched = value;
+          });
+        },
+        activeTrackColor: Colors.black87, 
+        activeColor: Colors.black
+        ),
+      ],
+    ),
+    );
+  }
+
+ 
+
 
   Container _signUpButtonWidget() {
     return Container(
@@ -283,18 +436,24 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ) :
         Text(
-          "Sign Up",
+          loading ? Center(child: CircularProgressIndicator(),)  : "Sign Up",
           style: TextStyle(fontFamily: 'Exo2',color: Colors.white, fontSize: 20.0),
         ),
         color: colorCurve,
         onPressed: () async{
           // Going to DashBoard
-          Map data = {
-            'name': _name,
-            'email': _email ,
-            'password': _password ,
-            'publicVisible': true
-          };
+          setState(() {
+            loading = true; 
+          });
+        
+          if (_formKey.currentState.validate()) {
+           _formKey.currentState.save();
+            Map data = {
+              'name': _name,
+              'email': _email ,
+              'password': _password ,
+              'publicVisible': isSwitched
+            };
           var body = json.encode(data);
           print(body);
           String url = "http://bnbuildingcode.com/api/register/";
@@ -340,6 +499,12 @@ class _SignUpPageState extends State<SignUpPage> {
               ));
 
             
+            }
+          } else{
+            setState(() {
+            loading = false ;
+            _autovalidate = true;
+          });
           }
         },
       ),
@@ -360,14 +525,21 @@ class _SignUpPageState extends State<SignUpPage> {
   registerFields() => Container(
         child: Form(
             key: _formKey,
+            autovalidate: _autovalidate,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 _nameWidget(),
+                SizedBox(height: size.getWidthPx(8)),
                 _emailWidget(),
+                SizedBox(height: size.getWidthPx(8)),
                 _passwordWidget(),
+                SizedBox(height: size.getWidthPx(8)),
                 _confirmPasswordWidget(),
+                SizedBox(height: size.getWidthPx(8)),
+                _visibilitySwitch(),
+                SizedBox(height: size.getWidthPx(8)),
                 _signUpButtonWidget(),
               ],
             )),
