@@ -35,8 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   LoginResponse _loginResponse ;
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-  FocusNode _emailFocusNode = new FocusNode();
-  FocusNode _passFocusNode = new FocusNode();
+
   String _email , _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autovalidate =  false ;

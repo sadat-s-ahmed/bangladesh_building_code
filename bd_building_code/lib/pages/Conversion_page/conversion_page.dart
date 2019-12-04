@@ -6,6 +6,10 @@ import 'calculator-buttons.dart';
 import 'history.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:decimal/decimal.dart';
+import 'package:dropdownfield/dropdownfield.dart';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 Color bg_color = Colors.white ;
 
@@ -24,10 +28,120 @@ class _ConversionPageState extends State<ConversionPage> {
   String calculatorString = '';
   bool conversionType = false;
   //flase => ft , true =>  inches
-  final double _initFabHeight = 120.0;
+  final double _initFabHeight = 150.0;
   double _fabHeight;
   double _panelHeightOpen = 575.0;
-  double _panelHeightClosed = 120.0;
+  double _panelHeightClosed = 150.0;
+
+  int ptype = 1 ;
+  List deshi = [
+    {
+      "display": "Acre",
+      "value": 1,
+    },
+    {
+      "display": "Ayer",
+      "value": 2,
+    },
+    {
+      "display": "Bigha",
+      "value": 3,
+    },
+    {
+      "display": "Chotak",
+      "value": 4,
+    },
+    {
+      "display": "Decimal",
+      "value": 5,
+    },
+    {
+      "display": "Dhul",
+      "value": 6,
+    },
+    {
+      "display": "Dondho",
+      "value": 7,
+    },
+    {
+      "display": "Gonda",
+      "value": 8,
+    },
+    {
+      "display": "Hectare",
+      "value": 9,
+    },
+    {
+      "display": "Kak",
+      "value": 10,
+    },
+    {
+      "display": "Kani",
+      "value": 11,
+    },
+    {
+      "display": "Katha",
+      "value": 12,
+    },
+    {
+      "display": "Kontha",
+      "value": 13,
+    },
+    {
+      "display": "Kora",
+      "value": 14,
+    },
+    {
+      "display": "Kranti",
+      "value": 15,
+    },
+    {
+      "display": "Ojutangsho",
+      "value": 16,
+    },
+    {
+      "display": "Renu",
+      "value": 17,
+    },
+    {
+      "display": "Sotak",
+      "value": 18,
+    },
+    {
+      "display": "Shotangsho",
+      "value": 19,
+    },
+    {
+      "display": "Square Chain",
+      "value": 20,
+    },
+    {
+      "display": "Square Feet ",
+      "value": 21,
+    },
+    {
+      "display": "Square Hat",
+      "value": 22,
+    },
+    {
+      "display": "Square Inchi",
+      "value": 23,
+    },
+    {
+      "display": "Square Link",
+      "value": 24,
+    },
+    {
+      "display": "Square Meter ",
+      "value": 25,
+    },
+    {
+      "display": "Til",
+      "value": 26,
+    },
+  ];
+
+
 
   void initState(){
     super.initState();
@@ -83,94 +197,98 @@ _setHistory(var x){
 
   Widget _buttons(){
     return Container(
+      height: 150,
       padding: EdgeInsets.only(
-        top: 15 ,
-        bottom: 0,
         left: 10,
         right: 10 
 
       ),
       child: Column(
+        
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start, 
+            Container(
+                height: 120,
+                    padding: EdgeInsets.all(16),
+                    child: DropDownFormField(
+                      validator: (val){
+                       if( val == null ){
+                        return 'Please Select an Option';
+                      }
+                      return null;
+                      },
+                      required: true,
+                      titleText: '',
+                      hintText: 'Please choose one',
+                      value: ptype,
+                      onSaved: (value) {
+                        setState(() {
+                          ptype = int.parse(value);
+                        });
+                        _convertValue(ptype);
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          ptype = int.parse(value);
+                        });
+                        _convertValue(ptype);
+                      },
+                      dataSource:deshi,
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
+                  ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   crossAxisAlignment: CrossAxisAlignment.start, 
             
-            children: <Widget>[
-              // Container(
-              //       padding: EdgeInsets.all(16),
-              //       child: DropDownFormField(
-              //         validator: (val){
-              //          if( val == null ){
-              //           return 'Please Select an Option';
-              //         }
-              //         return null;
-              //         },
-              //         required: true,
-              //         titleText: 'Plot Type',
-              //         hintText: 'Please choose one',
-              //         value: ptype,
-              //         onSaved: (value) {
-              //           setState(() {
-              //             ptype = value;
-              //           });
-              //         },
-              //         onChanged: (value) {
-              //           setState(() {
-              //             ptype = value;
-              //           });
-              //         },
-              //         dataSource:plottype,
-              //         textField: 'display',
-              //         valueField: 'value',
-              //       ),
-              //     )
+          //   children: <Widget>[
 
-              RaisedButton(
-                onPressed: (){
-                  if(calculatorString.length > 0 ){
-                    if(conversionType){
-                  _onPressed(buttonText: '*');
-                  _onPressed(buttonText: '1');
-                  _onPressed(buttonText: '2');
-                  _onPressed(buttonText: '=');
-                  }else{
-                    _onPressed(buttonText: '/');
-                  _onPressed(buttonText: '1');
-                  _onPressed(buttonText: '2');
-                  _onPressed(buttonText: '=');
-                  }
-                  setState(() {
-                  conversionType= !this.conversionType; 
-                  });
-                  }
-                },
-                child: Text(this.conversionType ? 'inch' : 'ft'),
-              ) 
-            ],
-          ),
-            IconButton(
-            iconSize: 15.0,
-            icon: Icon(Icons.filter_list),
-            onPressed: (){},
-          ),
-          
-          // Positioned(
-          //       top: 30.0,
-          //       left: 20,
-          //       child: GestureDetector(
-          //         onTap: (){},
-          //         child: Icon(CupertinoIcons.down_arrow)
-          //   ),
-          // )
-           
+              
+          //     RaisedButton(
+          //       onPressed: (){
+          //         if(calculatorString.length > 0 ){
+          //           if(conversionType){
+          //         calculatorString += "*12";
+          //         _onPressed(buttonText: '=');
+          //         }else{
+          //          calculatorString += "/12";
+          //         _onPressed(buttonText: '=');
+          //         }
+          //         setState(() {
+          //         conversionType= !this.conversionType; 
+          //         });
+          //         }
+          //       },
+          //       child: Text(this.conversionType ? 'inch' : 'ft'),
+          //     ) 
+          //   ],
+          // ),
+          //   IconButton(
+          //   iconSize: 10.0,
+          //   icon: Icon(Icons.filter_list),
+          //   onPressed: (){},
+          // )    
         ],
       )
     );
   }
+_convertValue(int p){
+  if(calculatorString.length > 0 ){
+    calculatorString += "*12";
+  }else {
+    Fluttertoast.showToast(
+                msg: "Please Input Values First ",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.white,
+                textColor: Colors.black,
+                fontSize: 10.0);   
+  }
+}
+
 
    Widget _body(){
      return SafeArea(
