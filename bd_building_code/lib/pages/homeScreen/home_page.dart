@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage>{
   List<HomeCardsDetails> pages = [
     new HomeCardsDetails("Guide Book",'assets/home/catalogue.png' , GuidebookPage()),
     new HomeCardsDetails(
-        "Estimation Unit Converter", 'assets/home/calculator.png', ConversionPage()),
+        "Unit Converter Calculator", 'assets/home/calculator.png', ConversionPage()),
     new HomeCardsDetails("FAR Calculator", 'assets/home/calculation.png', Far_page()),
     new HomeCardsDetails("Member", 'assets/home/science.png', MemberPage()),
     

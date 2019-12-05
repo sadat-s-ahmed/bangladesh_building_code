@@ -28,15 +28,16 @@ class _ConversionPageState extends State<ConversionPage> {
   String calculatorString = '';
   bool conversionType = false;
   //flase => ft , true =>  inches
-  final double _initFabHeight = 150.0;
+  final double _initFabHeight = 140.0;
   double _fabHeight;
   double _panelHeightOpen = 575.0;
-  double _panelHeightClosed = 150.0;
+  double _panelHeightClosed = 140.0;
 
   int ptype = 1 ;
+  int btype = 1  ;
   List deshi = [
     {
-      "display": "Acre",
+      "display": "Katha",
       "value": 1,
     },
     {
@@ -80,7 +81,7 @@ class _ConversionPageState extends State<ConversionPage> {
       "value": 11,
     },
     {
-      "display": "Katha",
+      "display": "Acre",
       "value": 12,
     },
     {
@@ -136,8 +137,12 @@ class _ConversionPageState extends State<ConversionPage> {
       "value": 25,
     },
     {
-      "display": "Til",
+      "display": "Square Yard",
       "value": 26,
+    },
+    {
+      "display": "Til",
+      "value": 27,
     },
   ];
 
@@ -197,8 +202,9 @@ _setHistory(var x){
 
   Widget _buttons(){
     return Container(
-      height: 150,
+      height: 100,
       padding: EdgeInsets.only(
+        top: 15,
         left: 10,
         right: 10 
 
@@ -209,8 +215,8 @@ _setHistory(var x){
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
             Container(
-                height: 120,
-                    padding: EdgeInsets.all(16),
+                height: 100,
+                    padding: EdgeInsets.all(5),
                     child: DropDownFormField(
                       validator: (val){
                        if( val == null ){
@@ -224,15 +230,16 @@ _setHistory(var x){
                       value: ptype,
                       onSaved: (value) {
                         setState(() {
-                          ptype = int.parse(value);
+                          btype = ptype ;
+                          ptype = value;
                         });
-                        _convertValue(ptype);
+                        _convertValue(ptype , btype );
                       },
                       onChanged: (value) {
-                        setState(() {
-                          ptype = int.parse(value);
-                        });
-                        _convertValue(ptype);
+                          btype = ptype ;
+                          ptype = value;
+                      
+                        _convertValue(ptype , btype);
                       },
                       dataSource:deshi,
                       textField: 'display',
@@ -266,7 +273,7 @@ _setHistory(var x){
           //   ],
           // ),
           //   IconButton(
-          //   iconSize: 10.0,
+          //   iconSize: 5.0,
           //   icon: Icon(Icons.filter_list),
           //   onPressed: (){},
           // )    
@@ -274,9 +281,19 @@ _setHistory(var x){
       )
     );
   }
-_convertValue(int p){
+_convertValue(int pt , int bt){
   if(calculatorString.length > 0 ){
-    calculatorString += "*12";
+
+    print(pt );
+    print(bt);
+    if(bt == 1 ) {
+        _forwardCalc(pt);
+    }else  {
+       _backwardCalc(bt );
+       _forwardCalc(pt);
+    }
+    // calculatorString += "*$p";
+    // _onPressed(buttonText: '=');
   }else {
     Fluttertoast.showToast(
                 msg: "Please Input Values First ",
@@ -286,6 +303,230 @@ _convertValue(int p){
                 backgroundColor: Colors.white,
                 textColor: Colors.black,
                 fontSize: 10.0);   
+  }
+}
+
+_forwardCalc(int x){
+  if(x == 1){
+      calculatorString += "*$x";
+     _onPressed(buttonText: '=');
+  }else if(x ==2 ){
+      var r = 0.668;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if (x == 3 ){
+     var r = 0.05;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==4){
+     var r = 16;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==5){
+     var r = 1.652;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==6){
+     var r =419.99;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==7){
+     var r = 60;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==8){
+     var r = 0.833;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==9){
+     var r = 0.006638;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==10){
+     var r = 13.33;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==11){
+     var r = 0.0416;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==12){
+     var r = 0.0165;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==13){
+     var r = 10;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==14){
+     var r = 3.33;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==15){
+     var r = 9.917;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==16){
+     var r = 165.289;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==17){
+     var r = 12600;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==18){
+     var r = 1.652;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==19){
+     var r = 1.652;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==20){
+     var r =  0.1654;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==21){
+     var r = 720;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==22){
+     var r =  320;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==23){
+     var r = 103680.06;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==24){
+     var r =  1652.892;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==25){
+     var r = 66.89;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==26){
+     var r = 80;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }else if(x==27){
+     var r = 198.3471;
+     calculatorString += "*$r";
+     _onPressed(buttonText: '=');
+  }
+  
+  
+}
+
+_backwardCalc(int x){
+  if(x == 1){
+      calculatorString += "/$x";
+     _onPressed(buttonText: '=');
+  }else if(x ==2 ){
+      var r = 0.668;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if (x == 3 ){
+     var r = 0.05;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==4){
+     var r = 16;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==5){
+     var r = 1.652;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==6){
+     var r =419.99;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==7){
+     var r = 60;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==8){
+     var r = 0.833;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==9){
+     var r = 0.006638;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==10){
+     var r = 13.33;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==11){
+     var r = 0.0416;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==12){
+     var r = 0.0165;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==13){
+     var r = 10;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==14){
+     var r = 3.33;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==15){
+     var r = 9.917;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==16){
+     var r = 165.289;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==17){
+     var r = 12600;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==18){
+     var r = 1.652;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==19){
+     var r = 1.652;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==20){
+     var r =  0.1654;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==21){
+     var r = 720;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==22){
+     var r =  320;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==23){
+     var r = 103680.06;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==24){
+     var r =  1652.892;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==25){
+     var r = 66.89;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==26){
+     var r = 80;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
+  }else if(x==27){
+     var r = 198.3471;
+     calculatorString += "/$r";
+     _onPressed(buttonText: '=');
   }
 }
 
@@ -346,6 +587,7 @@ _convertValue(int p){
       return setState(() {
         operations.add(Calculations.CLEAR);
         calculatorString = "";
+        
       });
     }
 
