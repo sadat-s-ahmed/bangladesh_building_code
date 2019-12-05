@@ -7,6 +7,8 @@ import 'package:pdf_render/pdf_render.dart';
 import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 Color appbarColor = Colors.black;
 
@@ -29,6 +31,43 @@ final pageController = PageController(
 );
 List bookmarked = [];
 int listnums ;
+String v ;
+@override
+void initState() { 
+  super.initState();
+  
+  if(widget.title == 'Imarat Nirman Bidhimala'){
+    v = 'bookmarkN';
+  }else {
+    v = 'bookmarkD';
+  }
+  _getBookmarks();
+}
+
+_getBookmarks() async{ 
+  final bookmarks = new FlutterSecureStorage();
+  
+  String s = await bookmarks.read(key: v);
+  if(s != null ){
+    s.split(',').forEach((a){
+        int i = int.parse(a);
+        bookmarked.add(i);
+    });
+  }
+  
+}
+
+_writeBookmarks() async{
+  String s  = "";
+  bookmarked.forEach((a){
+    s += "$a," ;
+  });
+  final bookmarks = new FlutterSecureStorage();
+  bookmarks.delete(key: v);
+  await bookmarks.write(key: v, value: s );
+
+}
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +114,7 @@ int listnums ;
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Bookmarked Pages"),
+                          Text("Bookmarked Pages", style: TextStyle(fontSize: 30 ,fontWeight: FontWeight.bold),),
                         ...list
                         ]
                         ),
@@ -123,6 +162,7 @@ int listnums ;
             onPressed: (){
                 print(pageController.page.ceil());
                 bookmarked.add(pageController.page.ceil());
+                _writeBookmarks();
             },
             child: Icon(Icons.bookmark),
             backgroundColor: Colors.blue,

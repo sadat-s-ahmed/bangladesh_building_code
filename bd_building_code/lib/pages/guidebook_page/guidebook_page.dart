@@ -24,7 +24,7 @@ class _GuidebookPageState extends State<GuidebookPage> with TickerProviderStateM
   List<HomeCardsDetails> pages = [
       new HomeCardsDetails("BNBC",'assets/home/buildings.png' , Pdfviewer(title: 'BNBC',url: 'assets/BNBC.pdf',)),
       new HomeCardsDetails(
-          "Imarat Nirman Bidhimala ", 'assets/home/notebook.png', Pdfviewer(title: 'Imarat Nirman Bidhimala',url: 'assets/imarat_nirman.pdf',)),
+          "Imarat Nirman Bidhimala", 'assets/home/notebook.png', Pdfviewer(title: 'Imarat Nirman Bidhimala',url: 'assets/imarat_nirman.pdf',)),
       new HomeCardsDetails("Daag", 'assets/home/contract-1.png',Pdfviewer(title:'Daag',url: 'assets/daag.pdf' ))
     ];
   AnimationController cardEntranceController ; 
