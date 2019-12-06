@@ -448,7 +448,7 @@ class _Far_pageState extends State<Far_page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Road Width',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text( _RW.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text( _RW == 0 ? "NP" :_RW.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
               SizedBox(
@@ -459,7 +459,7 @@ class _Far_pageState extends State<Far_page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('FAR',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text( _FAR.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text(  _FAR == 0 ? "NP" :_FAR.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
               SizedBox(
@@ -470,7 +470,7 @@ class _Far_pageState extends State<Far_page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('MGC',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-                  Text( _MGC.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text(  _MGC == 0 ? "NP" :_MGC.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
               SizedBox(
@@ -484,14 +484,14 @@ class _Far_pageState extends State<Far_page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Existing Land Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text(  _Existing_land_Area.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text(   _Existing_land_Area == 0 ? "NP" :_Existing_land_Area.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
                 Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Max Building Area',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text(  _MBA.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text(  _MBA == 0 ? "NP" : _MBA.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
               SizedBox(
@@ -502,7 +502,7 @@ class _Far_pageState extends State<Far_page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Max Ground Coverage',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-                  Text( _MaxGC.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text(  _MaxGC == 0 ? "NP" :_MaxGC.toStringAsFixed(1),style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
               SizedBox(
@@ -513,7 +513,7 @@ class _Far_pageState extends State<Far_page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('No. Of Floors',style:TextStyle(fontSize:  20 ,fontWeight:FontWeight.w600),),
-                  Text(  _floors.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text(  _floors == 0 ? "NP" : _floors.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
               SizedBox(
@@ -524,7 +524,7 @@ class _Far_pageState extends State<Far_page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Final No. of Floors',style:TextStyle(fontSize: 20 ,fontWeight:FontWeight.w600),),
-                  Text(final_floors.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
+                  Text( final_floors == 0 ? "NP" :final_floors.toStringAsFixed(1) ,style:TextStyle(fontSize: 18 ,fontWeight:FontWeight.w700),)
                 ],
               ),
               SizedBox(
