@@ -1,16 +1,17 @@
 
 import 'package:bd_building_code/models/home_card_details.dart';
 import 'package:bd_building_code/pages/FAR_page/far_page.dart';
+import 'package:bd_building_code/pages/about/tester.dart';
 import 'package:bd_building_code/pages/guidebook_page/guidebook_page.dart';
 import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
 import 'package:bd_building_code/pages/about/about_page.dart';
-import 'package:bd_building_code/pages/loginScreen/loginScreen.dart' as prefix0;
 import 'package:bd_building_code/pages/loginScreen/loginScreen.dart';
 import 'package:bd_building_code/pages/members/memberPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:badges/badges.dart';
 
 Color backgroundColor = Colors.grey.shade200;
 Color appbarColor = Colors.black;
@@ -48,6 +49,7 @@ class _HomePageState extends State<HomePage>{
     new HomeCardsDetails("Member", 'assets/home/science.png', MemberPage()),
     
     new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', AboutPage()),
+    new HomeCardsDetails("Tester", 'assets/home/architecture-and-city.png', TesterPage()),
   ];
 
 
@@ -118,29 +120,37 @@ class _HomePageState extends State<HomePage>{
               ),
             ),
             new ListTile(
-                leading: Icon(Icons.verified_user),
-                title: new Text("Profile"),
+                leading: Icon(Icons.comment),
+                title: new Text("Chat Messenger"),
+                trailing: Badge(
+                    badgeColor: Colors.grey,
+                    shape: BadgeShape.square,
+                    borderRadius: 20,
+                    toAnimate: false,
+                    badgeContent:
+                        Text('Coming Soon', style: TextStyle(color: Colors.black45)),
+                    ),
                 onTap: () {
                    Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => GuidebookPage()),
                   );
                 }),
-            new ListTile(
-                leading:Icon(Icons.bug_report),
-                title: new Text("Report Issue"),
-                onTap: () {
-                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Far_page()),
-                  );
-                }),
-            new ListTile(
-                leading: Icon(Icons.settings),
-                title: new Text("Settings"),
-                onTap: () {
-                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ConversionPage()),
-                  );
-                }),
+            // new ListTile(
+            //     leading:Icon(Icons.bug_report),
+            //     title: new Text("Report Issue"),
+            //     onTap: () {
+            //        Navigator.of(context).push(
+            //         MaterialPageRoute(builder: (context) => Far_page()),
+            //       );
+            //     }),
+            // new ListTile(
+            //     leading: Icon(Icons.settings),
+            //     title: new Text("Settings"),
+            //     onTap: () {
+            //        Navigator.of(context).push(
+            //         MaterialPageRoute(builder: (context) => ConversionPage()),
+            //       );
+            //     }),
             new Divider(),
             new ListTile(
                 leading: Icon(Icons.power_settings_new),
