@@ -4,49 +4,51 @@ import 'package:flutter/services.dart' show rootBundle;
 
 Color backgroundColor = Colors.grey.shade200;
 Color appbarColor = Colors.black;
-Color bg_grad = Color.fromRGBO(58, 58,58,1);
-Color bg_grad2 = Color.fromRGBO(58, 58, 58,.7);
-Color grads = Color.fromRGBO(189 , 195 , 199, 1);
-Color grads2 = Color.fromRGBO(44  , 62  , 80, 1);
-Color gradinner1 = Color.fromRGBO(142 , 158 , 171, 1);
-Color gradinner2 = Color.fromRGBO(238, 242 , 243, 1);
+Color bg_grad = Color.fromRGBO(58, 58, 58, 1);
+Color bg_grad2 = Color.fromRGBO(58, 58, 58, .7);
+Color grads = Color.fromRGBO(189, 195, 199, 1);
+Color grads2 = Color.fromRGBO(44, 62, 80, 1);
+Color gradinner1 = Color.fromRGBO(142, 158, 171, 1);
+Color gradinner2 = Color.fromRGBO(238, 242, 243, 1);
 
-
-
-class AboutPage extends StatefulWidget {
-  AboutPage({Key key}) : super(key: key);
+class TesterPage extends StatefulWidget {
+  TesterPage({Key key}) : super(key: key);
 
   @override
-  _AboutPageState createState() => _AboutPageState();
+  _TesterPageState createState() => _TesterPageState();
 }
 
-class _AboutPageState extends State<AboutPage> {
-List list   ;
-String text ; 
-@override
-void initState() { 
-  super.initState();
-  getBearings();
-  
-}
-getBearings() async{
-  loadAsset(context).then((s){
-    print(s.split("CHAPTER").length);
+class _TesterPageState extends State<TesterPage> {
+  List list;
+  String text;
+  @override
+  void initState() {
+    super.initState();
+    getBearings();
+  }
 
-    list = s.split('###SECTION');
-    text = s.split('###SECTION')[0] ; 
-  });
-}
+  getBearings() async {
+    loadAsset(context).then((s) {
+      print(s.split("").length);
+      //  var chunks = [];
+      //   for (var i = 0; i < s.split('').length; i += 1500) {
+      //     chunks.add(s.split('/n').sublist(i, i+1500));
+      //   }
+      //   print(chunks.length);
+      // list = s.split('###SECTION');
+      text = s;
+    });
+  }
 
-Future<String> loadAsset(BuildContext context) async {
-  return await DefaultAssetBundle.of(context).loadString('assets/BNBC.txt');
-}
+  Future<String> loadAsset(BuildContext context) async {
+    return await DefaultAssetBundle.of(context).loadString('assets/BNBC.txt');
+  }
 
-TextStyle posRes = TextStyle(color: Colors.white, backgroundColor: Colors.red),
-    negRes = TextStyle(color: Colors.black, backgroundColor: Colors.white);
+  TextStyle posRes =
+          TextStyle(color: Colors.white, backgroundColor: Colors.red),
+      negRes = TextStyle(color: Colors.black, backgroundColor: Colors.white);
 
-String search;
-
+  String search;
 
 // final text = '''
 // Call me Ishmael. Some years ago—never mind how long precisely—having
@@ -67,119 +69,114 @@ String search;
 // cherish very nearly the same feelings towards the ocean with me.
 // '''.replaceAll("\n", " ").replaceAll("  ", "");
 
-TextSpan searchMatch(String match) {
-  if (search == null || search == "")
-    return TextSpan(text: match, style: negRes);
-  var refinedMatch = match.toLowerCase();
-  var refinedSearch = search.toLowerCase();
-  if (refinedMatch.contains(refinedSearch)) {
-    if (refinedMatch.substring(0, refinedSearch.length) == refinedSearch) {
-      return TextSpan(
-        style: posRes,
-        text: match.substring(0, refinedSearch.length),
-        children: [
-          searchMatch(
-            match.substring(
-              refinedSearch.length,
+  TextSpan searchMatch(String match) {
+    if (search == null || search == "")
+      return TextSpan(text: match, style: negRes);
+    var refinedMatch = match.toLowerCase();
+    var refinedSearch = search.toLowerCase();
+    if (refinedMatch.contains(refinedSearch)) {
+      if (refinedMatch.substring(0, refinedSearch.length) == refinedSearch) {
+        return TextSpan(
+          style: posRes,
+          text: match.substring(0, refinedSearch.length),
+          children: [
+            searchMatch(
+              match.substring(
+                refinedSearch.length,
+              ),
             ),
+          ],
+        );
+      } else if (refinedMatch.length == refinedSearch.length) {
+        return TextSpan(text: match, style: posRes);
+      } else {
+        return TextSpan(
+          style: negRes,
+          text: match.substring(
+            0,
+            refinedMatch.indexOf(refinedSearch),
           ),
-        ],
-      );
-    } else if (refinedMatch.length == refinedSearch.length) {
-      return TextSpan(text: match, style: posRes);
-    } else {
-      return TextSpan(
-        style: negRes,
-        text: match.substring(
-          0,
-          refinedMatch.indexOf(refinedSearch),
-        ),
-        children: [
-          searchMatch(
-            match.substring(
-              refinedMatch.indexOf(refinedSearch),
+          children: [
+            searchMatch(
+              match.substring(
+                refinedMatch.indexOf(refinedSearch),
+              ),
             ),
-          ),
-        ],
-      );
+          ],
+        );
+      }
+    } else if (!refinedMatch.contains(refinedSearch)) {
+      return TextSpan(text: match, style: negRes);
     }
-  } else if (!refinedMatch.contains(refinedSearch)) {
-    return TextSpan(text: match, style: negRes);
+    return TextSpan(
+      text: match.substring(0, refinedMatch.indexOf(refinedSearch)),
+      style: negRes,
+      children: [
+        searchMatch(match.substring(refinedMatch.indexOf(refinedSearch)))
+      ],
+    );
   }
-  return TextSpan(
-    text: match.substring(0, refinedMatch.indexOf(refinedSearch)),
-    style: negRes,
-    children: [
-      searchMatch(match.substring(refinedMatch.indexOf(refinedSearch)))
-    ],
-  );
-}
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-            appBar:PreferredSize(
-                preferredSize: Size.fromHeight(60.0),
-                  child: AppBar(
-                  backgroundColor:appbarColor ,
-                  elevation: 0.0,
-                  centerTitle: true,
-                  title: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    color: Colors.white,
-                    child: TextField(
-                      showCursor: true,
-                      style: TextStyle(fontSize: 22 ,color:  Colors.black ),
-                      decoration: InputDecoration(hintText: "Search"),
-                      onChanged: (t) {
-                        setState(() => search = t);
-                      },
-                    ),
-                  ),
-                ),
-            ), 
-            drawer: new Drawer(
-              child: FutureBuilder(
-                future: loadAsset(context),
-                builder: (context , snapshot){
-                  if(snapshot.hasData){
-                    
-                    return new ListView.builder(
-                      itemCount: snapshot.data.split('###SECTION').length,
-                      itemBuilder: (context , index ){
-                        return ListTile(
-                            title: new Text("Chapter $index"),
-                            onTap: () {
-                              
-                              setState(() {
-                                 text= list[index];
-                              });
-                            });
-                      },
-                    );
-                  }else{
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                },
-              ),
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: AppBar(
+          backgroundColor: appbarColor,
+          elevation: 0.0,
+          centerTitle: true,
+          title: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            color: Colors.white,
+            child: TextField(
+              showCursor: true,
+              style: TextStyle(fontSize: 22, color: Colors.black),
+              decoration: InputDecoration(hintText: "Search for a word..."),
+              onChanged: (t) {
+              
+                setState(() => search = t);
+              },
+            ),
+          ),
+        ),
       ),
-            body: Scrollbar(
-              child: SingleChildScrollView(
-                child: RichText(
-                      textScaleFactor: 1,
-                      text: searchMatch(
-                       text,
-                      ),
-                    )
-                )
-                
-                
-                ,
-              ),
-          );
+      drawer: new Drawer(
+        child: FutureBuilder(
+          future: loadAsset(context),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return new ListView.builder(
+                itemCount: snapshot.data.split('###SECTION').length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                      title: new Text("Chapter $index"),
+                      onTap: () {
+                        setState(() {
+                          text = list[index];
+                        });
+                      });
+                },
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ),
+      body: Scrollbar(
+        child: SingleChildScrollView(
+            child: RichText(textScaleFactor: 1, 
+            text:searchMatch(
+                 text,
+                ),
+            )
+        ),
+      ),
+    );
   }
-
-  
 }

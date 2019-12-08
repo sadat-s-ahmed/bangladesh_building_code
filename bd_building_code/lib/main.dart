@@ -1,10 +1,8 @@
-import 'package:bd_building_code/pages/homeScreen/home_page.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:animated_splash/animated_splash.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:bd_building_code/pages/loginScreen/loginScreen.dart';
 
 void main(){
@@ -39,40 +37,14 @@ class MyApp extends StatelessWidget {
       // theme:_themeData ,
       title: 'Bangladesh Building Code',
       home: AnimatedSplash(
-        imagePath: 'assets/bd_code.png',
-        duration: 2000,
-        type: AnimatedSplashType.BackgroundProcess,
-        customFunction: duringSplash,
-        outputAndHome: routes,
-        home: HomePage(),
-      ),
+              imagePath: 'assets/bd_code.png',
+              home: LoginPage(),
+              duration: 2000,
+              type: AnimatedSplashType.StaticDuration,
+            )
+      ,
     );
   }
- final Map<int, Widget> routes = {
-    1:  HomePage(),
-    2:  LoginPage()
-   };
-  final Function duringSplash= (){
-    //do some auth logic here 
-    int val = 2;
-    if(val > 1 ){
-      return 2;
-    }else{
-      return 2 ;
-    }
-  };
-
-
-  // static Future<int> checkLoginState() async{
-  //   print('Checking Login State');
-  //   final authCodeStorage = FlutterSecureStorage();
-  //     String authKey = await authCodeStorage.read(key: "loginState");
-  //     if(authKey != null ){
-  //       return Future.value(1); 
-  //     }else {
-  //       return Future.value(2);
-  //     }
-  // }
 }
 
 

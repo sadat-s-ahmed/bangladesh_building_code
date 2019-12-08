@@ -94,9 +94,7 @@ class _Far_pageState extends State<Far_page> {
   
 
   @override
-  void initState() {
-    ptype = 1 ;
-    btype = 1 ;  
+  void initState() { 
     _area = 0 ;
     _length = 0 ;
     _width= 0 ;
@@ -317,6 +315,7 @@ class _Far_pageState extends State<Far_page> {
                       if( val.isEmpty ){
                         return 'Width cannot be Zero';
                       }
+                      return null;
                     },
                     onChanged: (val ){
                       _width = double.parse(val ) ;
@@ -352,12 +351,14 @@ class _Far_pageState extends State<Far_page> {
     
   }
   void _validateInputs() {
-    
+  setState(() {
+     _hasList = false; 
+    });  
     
   if (_formKey.currentState.validate()) {
     _formKey.currentState.save();
       generateValues();
-      setState(() {
+    setState(() {
      _hasList = true; 
     });
     //  _hasList = true;

@@ -40,7 +40,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>{
   String _token ;
-
+  final tokens = FlutterSecureStorage();
   List<HomeCardsDetails> pages = [
     new HomeCardsDetails("Guide Book",'assets/home/catalogue.png' , GuidebookPage()),
     new HomeCardsDetails(
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage>{
     new HomeCardsDetails("Member", 'assets/home/science.png', MemberPage()),
     
     new HomeCardsDetails("About", 'assets/home/architecture-and-city.png', AboutPage()),
-    new HomeCardsDetails("Tester", 'assets/home/architecture-and-city.png', TesterPage()),
+    // new HomeCardsDetails("Tester", 'assets/home/architecture-and-city.png', TesterPage()),
   ];
 
 
@@ -60,15 +60,19 @@ class _HomePageState extends State<HomePage>{
   }
   
   void getToken() async {
-    final tokens = FlutterSecureStorage();
+    
     String token = await tokens.read(key: "token");
-    print(token);
-    if(token == '' ){
+    print('$token Home');
+    if(token == null ){
       // return to login screen
+      if(token.length < 1 ){
+        print('home backe');
       Navigator.of(context).push(
               MaterialPageRoute(
               builder: (context) =>LoginPage() )   //Home()
               );
+      }
+      
     }else{
       setState(() {
        _token = token;
@@ -103,8 +107,8 @@ class _HomePageState extends State<HomePage>{
               
               color:Colors.white,
               child: new UserAccountsDrawerHeader(
-                accountName: new Text(widget.name),
-                accountEmail: new Text(widget.email),
+                accountName: new Text(widget.name == null ? "" : widget.name),
+                accountEmail: new Text(widget.email == null ? "" : widget.email),
                 decoration: BoxDecoration(
                   color:  appbarColor,
                 ),
@@ -156,10 +160,9 @@ class _HomePageState extends State<HomePage>{
                 leading: Icon(Icons.power_settings_new),
                 title: new Text("Logout"),
                 onTap: () async{
-                  final authCodeStorage = new FlutterSecureStorage();
-                  await authCodeStorage.write(key: "token", value: '');
-                  await authCodeStorage.write(key: "name", value: '');
-                  await authCodeStorage.write(key: "email", value: '');
+                  await tokens.write(key: "token", value: '');
+                  await tokens.write(key: "name", value: '');
+                  await tokens.write(key: "email", value: '');
                   Navigator.of(context).push(
                     MaterialPageRoute(
                     builder: (context) =>LoginPage() 

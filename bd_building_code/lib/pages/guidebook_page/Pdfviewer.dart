@@ -114,7 +114,7 @@ _writeBookmarks() async{
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Bookmarked Pages", style: TextStyle(fontSize: 30 ,fontWeight: FontWeight.bold),),
+                          Text("Bookmarked Pages", style: TextStyle(fontSize: 25 ,fontWeight: FontWeight.bold),),
                         ...list
                         ]
                         ),
@@ -143,6 +143,12 @@ _writeBookmarks() async{
                 
                 return PDFView(
                   controller: pageController,
+                  renderer: (PDFPage page) => page.render(
+                    width: page.width * 2,
+                    height: page.height * 2,
+                    format: PDFPageFormat.JPEG,
+                    backgroundColor: '#ffffff',
+                  ),
                   document: snapshot.data,
                 );
               }

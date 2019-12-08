@@ -52,14 +52,18 @@ class _LoginPageState extends State<LoginPage> {
     String token = await tokens.read(key: "token");
     String name = await tokens.read(key: "name");
     String email = await tokens.read(key: "email"); 
-    print(token);
-    if(token != ""){
+    print('$token login');
+    if(token != null ){
+      print('comes in ');
       // return to login screen
-      Navigator.of(context).push(
+      if(token.length >  1){
+        Navigator.of(context).push(
               MaterialPageRoute(
               builder: (context) =>HomePage( tokenn: token , name: name, email: email )   
               )
       );
+      }
+      
 
     }
     
@@ -389,8 +393,11 @@ class _LoginPageState extends State<LoginPage> {
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIos: 1,
                 backgroundColor: Colors.redAccent,
-                textColor: Colors.black,
+                textColor: Colors.white,
                 fontSize: 10.0);   
+            setState(() {
+             loading = false ; 
+            });
           }
 
           if(_loginResponse.status == 201){
