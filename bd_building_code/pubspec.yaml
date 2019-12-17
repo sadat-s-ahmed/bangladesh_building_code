@@ -42,6 +42,7 @@ dev_dependencies:
   fluttertoast: 2.2.11
   native_pdf_view: any
   device_info: ^0.4.1+3
+  indexed_list_view: ^1.0.8
   badges: ^1.1.0 
   
 

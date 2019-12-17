@@ -1,7 +1,7 @@
 
 import 'package:bd_building_code/models/home_card_details.dart';
 import 'package:bd_building_code/pages/FAR_page/far_page.dart';
-import 'package:bd_building_code/pages/about/tester.dart';
+
 import 'package:bd_building_code/pages/guidebook_page/guidebook_page.dart';
 import 'package:bd_building_code/pages/Conversion_page/conversion_page.dart';
 import 'package:bd_building_code/pages/about/about_page.dart';
@@ -212,8 +212,8 @@ class _HomePageState extends State<HomePage>{
               children: <Widget>[
                 Image.asset(
                     page.image,
-                    height: 60,
-                    width: 35,
+                    height: 40,
+                    width: 25,
                     fit: BoxFit.contain,
                 ),
                 new Padding(
@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage>{
                       style: TextStyle(
                         color: Colors.black87, 
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0
+                        fontSize: 15.0
                         ),
                     ),
                   ),

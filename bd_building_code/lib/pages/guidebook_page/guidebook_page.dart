@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:bd_building_code/models/home_card_details.dart';
 import 'package:bd_building_code/pages/guidebook_page/Pdfviewer.dart';
-import 'package:bd_building_code/pages/guidebook_page/PdfviewerT.dart';
+import 'package:bd_building_code/pages/guidebook_page/tester.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +14,8 @@ Color bg_grad = Color.fromRGBO(58, 58,58,1);
 Color bg_grad2 = Color.fromRGBO(58, 58, 58,.7);
 Color grads = Color.fromRGBO(189 , 195 , 199, 1);
 Color grads2 = Color.fromRGBO(44  , 62  , 80, 1);
-Color gradinner1 = Color.fromRGBO(142 , 158 , 171, 1);
-Color gradinner2 = Color.fromRGBO(238, 242 , 243, 1);
+Color gradinner1 = Color.fromRGBO(255 , 255 , 255, 1);
+Color gradinner2 = Color.fromRGBO(255, 255 , 255, .7);
 class GuidebookPage extends StatefulWidget {
   @override
   _GuidebookPageState createState() => _GuidebookPageState();
@@ -23,7 +23,7 @@ class GuidebookPage extends StatefulWidget {
 
 class _GuidebookPageState extends State<GuidebookPage> with TickerProviderStateMixin {
   List<HomeCardsDetails> pages = [
-      new HomeCardsDetails("BNBC",'assets/home/buildings.png' , Pdfviewer(title: 'BNBC',url: 'assets/BNBC.pdf',)),
+      new HomeCardsDetails("BNBC",'assets/home/buildings.png' , TesterPage(title: 'BNBC',url: 'assets/BNBC.pdf',)),
       new HomeCardsDetails(
           "Imarat Nirman Bidhimala", 'assets/home/notebook.png', Pdfviewer(title: 'Imarat Nirman Bidhimala',url: 'assets/imarat_nirman.pdf',)),
       new HomeCardsDetails("Daag", 'assets/home/contract-1.png',Pdfviewer(title:'Daag',url: 'assets/daag.pdf' ))
@@ -148,7 +148,7 @@ class _GuidebookPageState extends State<GuidebookPage> with TickerProviderStateM
   }
 
   Widget makeTiles(HomeCardsDetails page) {
-    return GestureDetector(
+    return InkWell(
       onTap: (){
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => page.to),

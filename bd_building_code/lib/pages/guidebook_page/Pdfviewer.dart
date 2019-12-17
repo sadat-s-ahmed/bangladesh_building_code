@@ -35,14 +35,45 @@ void initState() {
   
   if(widget.title == 'Imarat Nirman Bidhimala'){
     v = 'bookmarkN';
-  }else {
+  }
+  if(widget.title == 'Daag') {
     v = 'bookmarkD';
   }
   _getBookmarks();
 }
 
+__getChapters(){
+  List<Widget> arr  = new List<Widget>() ;
+  var a =[] ; 
+  if(v == 'bookmarkN' ){
+     a  = [0,7,21,25,29,52,56,61];
+  } 
+  if(v == 'bookmarkB') {
+     a  = [ 0,1]  ;
+  }
+
+  for(int i = 0 ; i < a.length ; i++ ){
+      arr.add(
+          ListTile(
+            title: new Text("Chapter $i"),
+            onTap: () {
+              setState(() {
+                  pageController.jumpToPage(a[i]);
+              });
+            })
+        );
+    }
+
+    return ListView(
+    shrinkWrap: true ,
+    children: arr ,
+  ) ;
+}
+
+
 _getBookmarks() async{ 
   final bookmarks = new FlutterSecureStorage();
+
   
   String s = await bookmarks.read(key: v);
   if(s != null ){
@@ -101,18 +132,62 @@ _writeBookmarks() async{
                         });
                       })
                   );
+
                 }
+                 Widget  l = ListView(
+                    shrinkWrap: true ,
+                    children: list ,
+                  ) ;
                 return SafeArea(
                     child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(0.0),
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Container(
+                            
+                            color:Colors.white,
+                            child: new UserAccountsDrawerHeader(
+                              accountName: new Text(widget.title == null ? "" : widget.title),
+                              accountEmail: new Text(" "),
+                              decoration: BoxDecoration(
+                                color:  appbarColor,
+                              ),
+                              // decoration: new BoxDecoration(
+                              //   image: new DecorationImage(
+                              //     image: new ExactAssetImage('assets/images/lake.jpeg'),
+                              //     fit: BoxFit.cover,
+                              //   ),
+                              // ),
+                              // currentAccountPicture: CircleAvatar(
+                              //     backgroundImage: NetworkImage(
+                              //         "https://randomuser.me/api/portraits/men/46.jpg")),
+                            ),
+                          ),
+                          Text("Chapters", style: TextStyle(fontSize: 25 ,fontWeight: FontWeight.bold),),
+                          Container( 
+                              alignment: Alignment.centerRight,
+                              margin: EdgeInsets.only(left: 25),
+                              child: __getChapters(),
+                            ),
+                          
+
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                          ) ,
                           Text("Bookmarked Pages", style: TextStyle(fontSize: 25 ,fontWeight: FontWeight.bold),),
-                        ...list
+                          bookmarked.length < 1  ? 
+                           Text("No Bookmarks Set Yet !", style: TextStyle(fontSize: 15 ,fontWeight: FontWeight.w200, color: Colors.grey[400] ))
+                            :
+                            Container( 
+                              alignment: Alignment.centerRight,
+                              margin: EdgeInsets.only(left: 25),
+                              child: l,
+                            )
+                             ,
                         ]
                         ),
                     ),
